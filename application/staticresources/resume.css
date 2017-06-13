@@ -1,0 +1,291 @@
+body {
+	font-family: "FontAwesome", "Helvetica Neue","Helvetica","Arial","sans-serif";
+	line-height: 1.4;
+    overflow-x:hidden;
+}
+
+.hidden {
+    display:none;
+}
+
+.margin-5 {
+    margin:5px;
+}
+
+.margin-left-5 {
+    margin-left:5px;
+}
+
+.margin-right-5 {
+    margin-right:5px;
+}
+
+.margin-top-5 {
+    margin-top:5px;
+}
+
+.margin-bottom-5 {
+    margin-bottom:5px;
+}
+
+.margin-10 {
+    margin:10px;
+}
+
+.margin-left-10 {
+    margin-left:10px;
+}
+
+.margin-right-10 {
+    margin-right:10px;
+}
+
+.margin-top-10 {
+    margin-top:10px;
+}
+
+.margin-bottom-10 {
+    margin-bottom:10px;
+}
+
+.margin-20 {
+    margin:20px;
+}
+
+.margin-left-20 {
+    margin-left:20px;
+}
+
+.margin-right-20 {
+    margin-right:20px;
+}
+
+.margin-top-20 {
+    margin-top:20px;
+}
+
+.margin-bottom-20 {
+    margin-bottom:20px;
+}
+
+.border-1 {
+    border:1px solid black;
+}
+
+.border-bottom-1 {
+    border-bottom:1px solid black;
+}
+
+.border-top-1 {
+    border-top:1px solid black;
+}
+
+.border-left-1 {
+    border-left:1px solid black;
+}
+
+.border-right-1 {
+    border-right:1px solid black;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.no-bullet {
+    list-style-type: none;
+}
+
+.hidden {
+    display:none;
+}
+
+.mobile-hidden {
+    display:none;
+}
+
+.bg-blue {
+    background:#054bfc;
+}
+
+@media screen and (max-width : 768px){ 
+    .mobile-hidden {
+        display:inline-block;
+    }
+}
+
+#left-container #footer {
+    background: #eee;
+    padding: 5px;
+    text-align:center;
+}
+
+div#close-x {
+    float: right;
+    font-size: 1.5em;
+    border-radius: 100%;
+    border: 1px solid #555;
+    color: #555;
+    padding: 0 5px;
+    top: 3px;
+    left: 12px;
+    position: relative;
+    background: white;
+}
+
+div#close-x:hover {
+    background:#ccc;
+    cursor:pointer;
+}
+
+div#social-container .sociallink {
+    vertical-align: middle;
+    text-align: center;
+    padding: 5px;
+    color:#fff;
+    background:#054bfc;
+    font-size:1.5em;
+    width:50px;
+    -webkit-clip-path: polygon(25% 0%, 100% 0%, 80% 100%, 10% 100%);
+    clip-path: polygon(25% 0%, 100% 0%, 80% 100%, 10% 100%);
+    text-indent: 3px;
+}
+
+#social-container .sociallink:hover {
+	background:#777;
+	text-decoration: none;
+}
+
+#header-container {
+    height: 125px;
+    background: #48a843;
+    padding-right:0;
+    color:white;
+    border-left:1px solid #ccc;
+    border-right:1px solid #ccc;
+}
+
+#header-container li {
+	list-style-type: none;
+}
+
+@media screen and (max-width : 768px){ 
+    #header-container {
+        height:auto;
+    }
+}
+
+div#photo-container {
+    background: #48a843;
+    height: 125px;
+    -webkit-clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 10% 100%);
+	clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 10% 100%);
+}
+
+
+@media screen and (max-width : 768px){ 
+    div#photo-container {
+        -webkit-clip-path: none;
+        clip-path: none;
+        display:none;
+    }
+
+    div#contact-container {
+        margin: 0 0 10px;
+    }
+}
+
+div#social-container .sociallink {
+    display: block;
+    margin-top:5px;
+}
+
+@media screen and (max-width : 768px){ 
+    div#social-container .sociallink {
+        display: inline-block;
+    }
+
+    div#social-container {
+        margin: 10px 0 0 0;
+        text-align: center;
+    }
+}
+
+.row.spacer {
+    height: 20px;
+}
+
+#body-container {
+    background:#eee;
+    min-height:400px;
+    border: 1px solid #333;
+}
+
+
+div#menu-container {
+    padding: 0;
+}
+
+#menu-container li {
+    display: inline;
+    -webkit-clip-path: polygon(25% 0%, 100% 0%, 80% 100%, 10% 100%);
+    clip-path: polygon(25% 0%, 100% 0%, 80% 100%, 10% 100%);
+    text-indent:7px;
+    min-width: 100px;
+    text-align: center;
+}
+
+#menu-container li:hover {
+    background:#054bfc;
+}
+nav.navbar {
+    background: #eee;
+    border-radius: 0;
+}
+
+#menu-container li a {
+    color: black;
+}
+
+#menu-container li.active a {
+    color: white;
+    background:#054bfc;
+}
+
+div#body-header {
+    font-size: 2em;
+    border-bottom: 1px solid #ccc;
+    padding: 5px 0;
+    margin: 5px 0 10px;
+}
+
+div.job-holder {
+    background: #e9e9e1;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    min-height:100px;
+}
+
+div.job-holder.active {
+    background: #f9f9f9;
+}
+
+.exp-holder {
+    background: white;
+    border: 1px solid #777;
+}
+
+#skills-container li.skill {
+    width:70%;
+    cursor: pointer;
+    cursor:hand;
+}
+
+#skills-container .exp {
+    background: #054bfc;
+    height: 20px;
+    display: block;
+    width:0;
+    color:white;
+}
