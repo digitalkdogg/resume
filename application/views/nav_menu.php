@@ -17,7 +17,10 @@
 			        <li id = "skills"><a href="#">Skills</a></li> 
 			      </ul>
 			      <ul class="nav navbar-nav navbar-right">
-			        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Contact</a></li>
+			        <li><a href="#" id = "contact" data-toggle="modal" data-target="#myModal">
+			        		<span class="glyphicon glyphicon-user"></span> Contact
+			        	</a>
+			        </li>
 			      </ul>
 			    </div>
 			  </div>

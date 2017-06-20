@@ -108,6 +108,10 @@ body {
     background:#054bfc;
 }
 
+.width-50 {
+    width:50%;
+}
+
 @media screen and (max-width : 768px){ 
     .mobile-hidden {
         display:inline-block;
@@ -252,7 +256,7 @@ nav.navbar {
     background:#054bfc;
 }
 
-div#body-header {
+div#body-header, div#modal-header {
     font-size: 2em;
     border-bottom: 1px solid #ccc;
     padding: 5px 0;
@@ -288,4 +292,29 @@ div.job-holder.active {
     display: block;
     width:0;
     color:white;
+}
+
+.modal-footer {
+    border:none;
+}
+
+#modal-body {
+    border-bottom:1px solid #ccc;
+    height:200px;
+}
+
+@media screen and (max-width : 768px){ 
+    #modal-body {
+        height:auto;
+    }
+}
+
+.modal-footer .btn {
+    background: #054bfc;
+    color:white;
+}
+
+.modal-footer .btn:hover {
+    background: #eee;
+    color:black;
 }

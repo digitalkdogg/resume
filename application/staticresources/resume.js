@@ -1,5 +1,3 @@
-var navigation = null;
-
 $(function () {
 	$.ajax({
     	url: 'index.php/Resume/About',
@@ -61,7 +59,9 @@ $(function () {
 						'data-exp': this.ExpertYear,
 						'data-id': id,
 						'data-name': name,
-						'html': name
+						'html': name,
+						'data-toggle':'modal',
+						'data-target': '#myModal'
 					}).appendTo('#skill-container_'+id);
 
 					 var skills = {[name]: {'exp': this.ExpertYear/10, 
@@ -229,6 +229,86 @@ $(function () {
 		$('#skills').click();
 	})
 
+	$('#contact').click(function () {
+		$('#modal-title').empty();
+		$('#modal-body').empty();
+		$('#modal-title').html('Contact Me');
+
+		$('<div />', {
+			'class':'contact-holder',
+			'id': 'contact-holder'
+		}).appendTo('#modal-body');
+
+		$('<div />', {
+			'class':'col-lg-2 margin-bottom-5',
+			'text': 'Name :'
+		}).appendTo('#contact-holder');
+
+		$('<div />', {
+			'class': 'col-lg-10 margin-bottom-5',
+			'id':'name-input-div'
+		}).appendTo('#contact-holder');
+
+		$('<input />', {
+			'id': 'name-input',
+			'class': 'form-control width-50'
+		}).appendTo('#name-input-div');
+
+		$('<div />', {
+			'class':'col-lg-2 margin-bottom-5',
+			'text': 'Email :'
+		}).appendTo('#contact-holder');
+
+		$('<div />', {
+			'class': 'col-lg-10 margin-bottom-5',
+			'id':'email-input-div'
+		}).appendTo('#contact-holder');
+
+		$('<input />', {
+			'id': 'email-input',
+			'class': 'form-control width-50'
+		}).appendTo('#email-input-div');
+
+		$('<div />', {
+			'class':'col-lg-2',
+			'text': 'Message :'
+		}).appendTo('#contact-holder');
+
+		$('<div />', {
+			'class': 'col-lg-5',
+			'id':'msg-input-div'
+		}).appendTo('#contact-holder');
+
+		$('<textarea />', {
+			'id': 'msg-input',
+			'class': 'form-control',
+			'cols': 70,
+			'rows': 3
+		}).appendTo('#msg-input-div');
+
+		$('#myModal').addClass('flipInY');
+	});
+
+	$('button#send').click(function (e) {
+		e.stopPropagation();
+		var data = {}
+		data.name = $('#name-input').val();
+		data.email = $('#email-input').val();
+		data.msg = $('#msg-input').val();
+		$.ajax({
+    		url: 'index.php/Resume/Contact',
+    		type: 'POST',
+    		dataType: 'JSON',
+    		data: {'name':data.name, 'email': data.email, 'msg':data.msg},
+    		success: function(send){ 
+        		console.log(send);
+    		},
+    		error: function(send) {
+    		
+    		}
+		});
+	});
+
 });
 
 function lookup_skills(name, skillz) {
@@ -243,35 +323,29 @@ return returnobj;
 }
 
 function load_skill_dets(skills, ele) {
-	$('#body-content').empty();
-	$('#body-container').addClass('flipInY');
 	var name = $(ele).data('name');
 	var thisobj = lookup_skills(name, skills);
-	navigation = 'skills';
 
-	$('#body-header').html(thisobj.Name);
-
-	$('<div />', {
-		'class': 'popup-wrapper',
-		'id': 'popup-wrapper'
-	}).appendTo('#body-content');
+	$('#modal-title').empty();
+	$('#modal-body').empty();
+	$('#modal-title').html(thisobj.Name);
 
 	$('<div />', {
 		'class':'skill-details',
 		'id': 'skill-details_'+thisobj.id
-	}).appendTo('#popup-wrapper');
+	}).appendTo('#modal-body');
 
 	$('<div />', {
 		'id': 'skill-details-row-1'
 	}).appendTo('#skill-details_'+thisobj.id)
 	
 	$('<div />', {
-		'class': 'col-lg-1 bold',
+		'class': 'col-lg-3 bold',
 		'text': 'Level :'
 	}).appendTo('#skill-details-row-1');
 
 	$('<div />', {
-		'class': 'col-lg-11',
+		'class': 'col-lg-8',
 		'text': thisobj.ExpertLevel
 	}).appendTo('#skill-details-row-1');
 
@@ -280,12 +354,12 @@ function load_skill_dets(skills, ele) {
 	}).appendTo('#skill-details_'+thisobj.id)
 	
 	$('<div />', {
-		'class': 'col-lg-1 bold',
+		'class': 'col-lg-3 bold',
 		'text': 'Years :'
 	}).appendTo('#skill-details-row-2');
 
 	$('<div />', {
-		'class': 'col-lg-11',
+		'class': 'col-lg-9',
 		'text': thisobj.ExpertYear
 	}).appendTo('#skill-details-row-2');
 
@@ -299,6 +373,5 @@ function load_skill_dets(skills, ele) {
 	}).appendTo('#skill-details-row-3');
 
 
-	$('#body-container').removeClass('flipInY');
-	$('#close-x').removeClass('hidden');
+	$('#myModal').addClass('flipInY');
 }

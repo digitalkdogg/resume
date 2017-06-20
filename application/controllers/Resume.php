@@ -22,8 +22,8 @@ class Resume extends CI_Controller {
         $this->load->view('nav_menu');
 
        $this->load->view('row_spacer');
-     //   $html = $this->About();
         $this->load->view('body');
+        $this->load->view('modal');
         $this->load->view('footer');
     }
 
@@ -57,7 +57,6 @@ class Resume extends CI_Controller {
         $this->load->model('experience');
         $html = $this->experience->get('1');
 
-       // print_r($html);
         if ($html != null ) {
 
             return $this->output
@@ -83,6 +82,22 @@ class Resume extends CI_Controller {
       ->set_content_type('application/json')
       ->set_output(null);
 
+    }
+
+    public function Contact() {
+        $data = $this->input->post();
+        $this->load->library('email'); 
+        $html = array();
+        $this->email->from($data['email'], $data['name']);
+        $this->email->to('KevinBollman@gmail.com');
+ 
+        $this->email->subject('Contact Me Submission');
+        $this->email->message($data['msg']);
+        //$this->email->send();
+        
+        return $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode($data)); 
     }
 
 }
