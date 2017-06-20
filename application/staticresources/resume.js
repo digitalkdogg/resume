@@ -374,4 +374,5 @@ function load_skill_dets(skills, ele) {
 
 
 	$('#myModal').addClass('flipInY');
+
 }

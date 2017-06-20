@@ -17,4 +17,5 @@ class Experience extends CI_Model {
         $query = $this->db->get('Experience');
         return $query->result();
     }
+
 }

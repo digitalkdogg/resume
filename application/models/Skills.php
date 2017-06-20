@@ -17,4 +17,5 @@ class Skills extends CI_Model {
         $query = $this->db->get('Skill');
         return $query->result();
     }
+
 }
