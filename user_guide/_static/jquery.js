@@ -1,5 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*! jQuery v1.8.3 jquery.com | jquery.org/license */
+=======
+/*! jQuery v1.8.3 jquery.com | jquery.org/license */
+>>>>>>> c79db19bfee329bc5f72036401fc16e5dade2668
 =======
 /*! jQuery v1.8.3 jquery.com | jquery.org/license */
 >>>>>>> c79db19bfee329bc5f72036401fc16e5dade2668
