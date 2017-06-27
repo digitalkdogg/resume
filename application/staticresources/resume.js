@@ -286,6 +286,8 @@ $(function () {
 			'rows': 3
 		}).appendTo('#msg-input-div');
 
+		$('#myModal #send').removeClass('hidden');
+
 		$('#myModal').addClass('flipInY');
 	});
 
@@ -307,6 +309,8 @@ $(function () {
     		
     		}
 		});
+
+		$('#myModal #send').addClass('hidden');
 	});
 
 });
@@ -375,4 +379,52 @@ function load_skill_dets(skills, ele) {
 
 	$('#myModal').addClass('flipInY');
 
+	load_project_skills(thisobj);
+
+}
+
+function load_project_skills(thisobj) {
+
+	$.ajax({
+    		url: 'index.php/Resume/ProjectSkill',
+    		type: 'POST',
+    		dataType: 'JSON',
+    		data: {'thisid': thisobj.id},
+    		success: function(data){ 
+        		$('<div />', {
+					'id': 'skill-proj-dets'
+				}).appendTo('#skill-details_'+thisobj.id);
+
+				$('<div />', {
+					'class': 'col-lg-2',
+					'text': 'Key Projects : '
+				}).appendTo('#skill-proj-dets');
+
+				$.each(data, function () {
+					$('<div />', {
+						'class': 'col-lg-12 skill-proj-dets',
+						'id':'skill-proj-wrapper_' + this.id 
+					}).appendTo('#skill-proj-dets');
+
+					$('<div />', {
+						'class': 'col-lg-12',
+						'text': this.ProjectName + ' - ' + this.DateCompleted.replace('null', '')
+					}).appendTo('#skill-proj-wrapper_' + this.id);
+
+					$('<div />', {
+						'class': 'col-lg-12',
+						'text': this.ProjectDetails
+					}).appendTo('#skill-proj-wrapper_' + this.id);
+				});
+
+
+
+
+
+
+    		},
+    		error: function(data) {
+    		
+    		}
+		});
 }

@@ -11,7 +11,7 @@
         <p></p>
       </div>
       <div class="modal-footer">
-        <button type="button" id ="send" class="btn btn-default" data-dismiss="modal">Send</button>
+        <button type="button" id ="send" class="btn btn-default hidden" data-dismiss="modal">Send</button>
         <button type="button" id = "close" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>

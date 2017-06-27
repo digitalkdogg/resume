@@ -100,5 +100,26 @@ class Resume extends CI_Controller {
         ->set_output(json_encode($data)); 
     }
 
+     public function ProjectSkill() {
+        $data = $this->input->post();
+        $this->load->model('projects');
+
+        if (sizeof($data) > 0) {
+            $html = $this->projects->get_project_for_skill($data['thisid']);
+        } else {
+            $html = null;
+        }
+        if ($html != null) {
+            return $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($html)); 
+        }      
+
+
+        return $this->output
+        ->set_content_type('application/json')
+        ->set_output(null); 
+    }
+
 }
 ?>
