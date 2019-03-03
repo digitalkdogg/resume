@@ -5,6 +5,7 @@
 				<a class = "fa fa-github-alt sociallink" href = "#"></a>
 			</div>
 			<div class = "col-xs-12 col-sm-9 col-md-9 col-lg-9" id = "contact-container">
+				<div class = "col-xs-8">
 			<?php
 				foreach ($query as $row)
 				{ ?> <h2><?php echo $row->Firstname . ' ' . $row->Lastname;	?> </h2>
@@ -13,9 +14,12 @@
         		    <li><?php echo $row->Phone; ?> </li>
         		<?php
         		}
-				?>
+				?></div>
+				<div id = "mobile-logo" class = "mobile-hidden col-xs-4">
+					<img src = "application/staticresources/img/kb-logo.png" />
+				</div>
 			</div>
 
 			<div class = "col-xs-2 col-sm-2 col-md-2 col-lg-2" id = "photo-container">
-				<img src = "http://lorempixel.com/400/200/" />
+				<img src = "application/staticresources/img/kb-logo.png" />
 			</div>

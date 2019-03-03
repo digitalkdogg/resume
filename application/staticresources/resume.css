@@ -4,6 +4,10 @@ body {
     overflow-x:hidden;
 }
 
+div.container {
+    margin-top:10px;
+}
+
 .hidden {
     display:none;
 }
@@ -105,7 +109,7 @@ body {
 }
 
 .bg-blue {
-    background:#054bfc;
+    background:#cc7700;
 }
 
 .width-50 {
@@ -142,12 +146,17 @@ div#close-x:hover {
     cursor:pointer;
 }
 
+div#social-container, div#contact-container {
+    background: #48a843;
+    height: 100%;
+}
+
 div#social-container .sociallink {
     vertical-align: middle;
     text-align: center;
     padding: 5px;
     color:#fff;
-    background:#054bfc;
+    background:#cc7700;
     font-size:1.5em;
     width:50px;
     -webkit-clip-path: polygon(25% 0%, 100% 0%, 80% 100%, 10% 100%);
@@ -162,11 +171,12 @@ div#social-container .sociallink {
 
 #header-container {
     height: 125px;
-    background: #48a843;
+   /* background: #48a843;  */
     padding-right:0;
     color:white;
-    border-left:1px solid #ccc;
-    border-right:1px solid #ccc;
+    border-left:1px solid black;
+    border-right:1px solid black;
+    border-top:1px solid black;
 }
 @media screen and (max-width : 768px) {
 	div#header-container:before {
@@ -187,13 +197,26 @@ div#social-container .sociallink {
     #header-container {
         height:auto;
     }
+
+    div#mobile-logo img {
+        width: 111px;
+        height: 75px;
+    }
+
+    div#mobile-logo {
+        padding: 30px 0;
+    }
 }
 
 div#photo-container {
-    background: #48a843;
+    background: white;
     height: 125px;
-    -webkit-clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 10% 100%);
-	clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 10% 100%);
+    overflow:hidden;
+}
+
+#photo-container img {
+    height: 125px;
+    width: 185px;
 }
 
 
@@ -206,6 +229,7 @@ div#photo-container {
 
     div#contact-container {
         margin: 0 0 10px;
+        padding: 10px 0;
     }
 }
 
@@ -222,6 +246,7 @@ div#social-container .sociallink {
     div#social-container {
         margin: 10px 0 0 0;
         text-align: center;
+        padding:10px 0;
     }
 }
 
@@ -256,11 +281,19 @@ div#menu-container {
 }
 
 #menu-container li:hover {
-    background:#054bfc;
+    background:#cc7700;
 }
 nav.navbar {
     background: #eee;
     border-radius: 0;
+}
+
+.navbar-toggle span.icon-bar {
+    background-color: black !important;
+}
+
+.navbar-inverse a.navbar-brand {
+    color: black;
 }
 
 #menu-container li a {
@@ -269,7 +302,8 @@ nav.navbar {
 
 #menu-container li.active a {
     color: white;
-    background:#054bfc;
+    background:#cc7700;
+    /*background:#054bfc;*/
 }
 
 div#body-header, div#modal-header {
@@ -303,7 +337,7 @@ div.job-holder.active {
 }
 
 #skills-container .exp {
-    background: #054bfc;
+    background: #ff9900;
     height: 20px;
     display: block;
     width:0;
@@ -326,7 +360,7 @@ div.job-holder.active {
 }
 
 .modal-footer .btn {
-    background: #054bfc;
+    background: #ff9900;
     color:white;
 }
 
