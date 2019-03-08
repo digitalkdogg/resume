@@ -9,4 +9,12 @@
     <link rel="stylesheet" href="application/staticresources/resume.css" />
     <link rel="stylesheet" href="application/staticresources/animate.css" />
     <script src="application/staticresources/jquery-3-2-1.js"></script>
+
+    <script>
+    var resume = {};
+    resume['baseurl'] = '<?php echo base_url(); ?>';
+    resume['siteurl'] = '<?php echo current_url(); ?>';
+
+	</script>
+
 </head>

@@ -1,0 +1,60 @@
+body {
+	font-family: sans-serif;
+	color: #333;
+	margin-top:-20px;
+	overflow-x: hidden;
+}
+
+div.container-fluid {
+    padding: 0;
+    margin: 0;
+}
+
+div#header {
+    background: #48a843;
+    height: 200px;
+}
+
+div#topbar {
+    text-align: center;
+    margin: 20px;
+    padding: 20px;
+}
+
+div#left_menu {
+    background: #eee;
+    padding: 20px;
+    min-height: 600px;
+    font-size: 2em;
+}
+
+.menu-item {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 20px;
+}
+
+div#the-guts {
+    padding: 20px;
+    font-size: 1.5em;
+}
+
+#the-guts .row.ele {
+    margin: 10px 0;
+}
+
+.resume-item.col-lg-3 {
+    background: #ccc;
+    opacity: .7;
+    margin: 0 10px;
+    min-height: 200px;
+    text-align: -webkit-center;
+}
+
+.resume-title {
+    border-bottom: 1px solid #333;
+    font-weight: bold;
+}
+
+span.error {
+	color : red;
+}
