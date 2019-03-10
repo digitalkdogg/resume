@@ -15,6 +15,10 @@ div#header {
     height: 200px;
 }
 
+div#header h1#title {
+    color:white;
+}
+
 div#topbar {
     text-align: center;
     margin: 20px;
@@ -43,11 +47,12 @@ div#the-guts {
 }
 
 .resume-item.col-lg-3 {
-    background: #ccc;
-    opacity: .9;
+    background: #9e4e10;
+    opacity: .7;
     margin: 0 10px;
     min-height: 200px;
-    text-align: -webkit-center;
+    text-align: center;
+    color:black;
 }
 
 .resume-title {
