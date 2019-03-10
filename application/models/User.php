@@ -20,4 +20,10 @@ class User extends CI_Model {
         return $query->result();
     }
 
+    public function auth($data) {
+        $this->db->where('Username', $data['username']);
+        $query = $this->db->get('User');
+        return $query->result();
+    }
+
 }

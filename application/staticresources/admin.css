@@ -44,7 +44,7 @@ div#the-guts {
 
 .resume-item.col-lg-3 {
     background: #ccc;
-    opacity: .7;
+    opacity: .9;
     margin: 0 10px;
     min-height: 200px;
     text-align: -webkit-center;
@@ -55,6 +55,33 @@ div#the-guts {
     font-weight: bold;
 }
 
+.resume-desc {
+    overflow:hidden;
+}
+
 span.error {
 	color : red;
+}
+
+div#login {
+    margin: 50px 0;
+    font-size: 1.4em;
+}
+
+#login .row {
+    margin: 15px 0;
+}
+
+#login button.btn {
+    width:150px;
+}
+
+i.fas.fa-receipt:before {
+    font-size: 28em;
+    content: "\f1ea";
+    font-family: FontAwesome;
+    position: absolute;
+    opacity: .1;
+    top: -65%;
+    left: 20%;
 }

@@ -6,11 +6,17 @@ class Meta extends CI_Controller {
         parent::__construct();
         $this->load->helper('url'); 
         $this->load->database();
+        $this->load->library('session');
     }
 
     public function save_meta() {
+
     	$data = $this->input->post('data');
     	$data = json_decode($data);
+
+     	if ($this->session->userdata('islogin') != true) {
+     		$data = null;
+     	}
 
     	if ($data != NULL) {
 	    	foreach($data as $item) {

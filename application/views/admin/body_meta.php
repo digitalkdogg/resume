@@ -1,6 +1,7 @@
 	<div class = "col-lg-9">
 		<div class = "row">
 			<div class = "col-lg-12 meta" id ="the-guts">
+				<i class="fas fa-receipt"></i>
 				<?php foreach($meta as $key => $value) { 
 					foreach($value as $data) { ?>
 						<?php if ($data->type == 'textinput') { ?>
