@@ -20,8 +20,7 @@ class User extends CI_Model {
         //where User.Username = 'KevinBollman'
         //and Resume.id = 1
 
-        $this->db->select('Meta.FieldValue, Fields.Name');
-       // $this->db->from('Meta');
+        $this->db->select('Meta.FieldValue, Fields.Name, Fields.eleid');
         $this->db->join('Fields_Relationships', 'Fields_Relationships.id = Meta.fieldrelationshipid');
         $this->db->join('Fields', 'Fields.id = Fields_Relationships.fieldid');
         $this->db->join('Resume', 'Resume.id = Fields.resumeid');

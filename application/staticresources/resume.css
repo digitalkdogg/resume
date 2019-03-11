@@ -160,6 +160,11 @@ div#social-container, div#contact-container {
     height: 100%;
 }
 
+#contact-container li.email a {
+    color: white;
+    text-decoration: underline;
+}
+
 div#social-container .sociallink {
     background: white;
     height: 60px;
