@@ -16,10 +16,13 @@
 				<div class = "col-xs-8">
 			<?php
 				foreach ($query as $row)
-				{ ?> <h2><?php echo $row->Firstname . ' ' . $row->Lastname;	?> </h2>
-        		    <li><b>Full Stack Web Developer</b></li>
-        		    <li><?php echo $row->Email; ?> </li>
-        		    <li><?php echo $row->Phone; ?> </li>
+				{ 
+					if ($row->Name == 'Contact Name') {
+						?> <h2><?php echo $row->FieldValue; ?> </h2>
+					<?php } else { ?>
+						<li><?php echo $row->FieldValue; ?></li>
+					<?php } ?>
+        		   
         		<?php
         		}
 				?></div>

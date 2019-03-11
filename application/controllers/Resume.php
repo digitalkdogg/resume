@@ -8,9 +8,27 @@ class Resume extends CI_Controller {
         $this->load->database();
     }
 
-    public function index(){
-  
 
+    public function view() {
+        $username = $this->uri->segment(3, 0);
+        $resumeid = $this->uri->segment(4, 0);
+        
+        $this->load->view('html_header');
+        $this->load->view('body_container');
+
+        $this->load->model('user');
+        $query=$this->user->get(array('username'=>$username, 'resumeid'=>$resumeid));
+        $queryresults['query'] = $query;
+        $this->load->view('body_header', $queryresults);
+        $this->load->view('row_spacer');
+        $this->load->view('body');
+        $this->load->view('modal');
+        $this->load->view('footer');
+
+    }
+
+    public function index(){
+        
     	//$query = $this->db->query('SELECT Username, Firstname, Lastname, Email, Phone FROM User');
         $this->load->model('user');
         $query=$this->user->get_all();

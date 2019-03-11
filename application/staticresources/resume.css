@@ -148,7 +148,7 @@ div#close-x:hover {
 
 .social-wrap {
     height: 35px;
-    width: 35px;
+    width: 50px;
     overflow: hidden;
     text-align: center;
     vertical-align: middle;
@@ -163,11 +163,12 @@ div#social-container, div#contact-container {
 div#social-container .sociallink {
     background: white;
     height: 60px;
-    padding: 45% 0;
+    padding: 35% 0;
     clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
     position: relative;
     top: -13px;
     font-size: 1.4em;
+    width:50px;
 }
 
 .sociallink span:before {

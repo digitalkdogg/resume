@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 //$config['base_url'] = 'http://barry/codeigniter/codeigniter';
-$config['base_url'] ='http://barry/codeigniter/codeigniter';
+$config['base_url'] ='http://yoda/resume';
 /*
 |--------------------------------------------------------------------------
 | Index File
