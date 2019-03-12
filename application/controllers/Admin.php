@@ -90,15 +90,18 @@ class Admin extends CI_Controller {
      	$this->load->view('admin/body_wrapper');
      	
      	if ($this->session->userdata('islogin')== true) {
-	     	$this->load->model('Site_meta');
-	     	$site = array('data' => $this->Site_meta->get_menu());
-	     	$this->load->view('admin/menu_left', array("site" => $site));
 
-	     	$this->load->model('MetaModel');
-	     	$meta = array("data" => $this->MetaModel->get_by_user($resumeid));
-	     	$this->load->view('admin/body_meta', array("meta" => $meta));
+       	$this->load->model('Site_meta');
+      	$site = array('data' => $this->Site_meta->get_menu());
+       	$this->load->view('admin/menu_left', array("site" => $site));
 
-	     	$this->load->view('admin/close_body');
+        if ($resumeid != null ) {  
+  	     	$this->load->model('MetaModel');
+  	     	$meta = array("data" => $this->MetaModel->get_by_user($resumeid));
+  	     	$this->load->view('admin/body_meta', array("meta" => $meta));
+
+  	     	$this->load->view('admin/close_body');
+        }
 	    } else {
      		redirect (base_url() . 'index.php/admin/login', 'refresh');
      	}

@@ -1,8 +1,32 @@
+/*****************************************
+clickmeyellow : FFC600;
+ResumeBlue : 267de0;
+ResumeLightBlue : 75ADEA;
+
+****************************************/
+
 body {
 	font-family: sans-serif;
 	color: #333;
 	margin-top:-20px;
 	overflow-x: hidden;
+}
+
+button.btn, button.btn-primary[disabled] {
+    background: #FFC600;
+    color: black;
+    opacity:1;
+}
+
+button.btn:hover {
+    background: #EEB900;
+    color:#777;
+}
+
+button.btn-primary[disabled]:hover {
+    background:#EEB900;
+    opacity:.7;
+    color:black;
 }
 
 div.container-fluid {
@@ -11,7 +35,7 @@ div.container-fluid {
 }
 
 div#header {
-    background: #48a843;
+    background: #267de0;
     height: 200px;
 }
 
@@ -47,12 +71,18 @@ div#the-guts {
 }
 
 .resume-item.col-lg-3 {
-    background: #9e4e10;
-    opacity: .7;
+    background: #75ADEA;
+    opacity: .9;
     margin: 0 10px;
     min-height: 200px;
     text-align: center;
-    color:black;
+    color:white;
+    cursor: pointer;
+}
+
+.resume-item.col-lg-3:hover {
+    opacity: 1;
+    background: #267de0;
 }
 
 .resume-title {
@@ -77,16 +107,26 @@ div#login {
     margin: 15px 0;
 }
 
-#login button.btn {
+button.btn {
     width:150px;
 }
 
 i.fas.fa-receipt:before {
-    font-size: 28em;
+    font-size: 33em;
     content: "\f1ea";
     font-family: FontAwesome;
     position: absolute;
     opacity: .1;
-    top: -65%;
+    top: -111%;
     left: 20%;
+}
+
+#left_menu a .menu-item {
+    color: #777;
+}
+
+#left_menu a .menu-item:hover {
+    color:#267de0;
+    cursor : pointer;
+    opacity: .7;
 }
