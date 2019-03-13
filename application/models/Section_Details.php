@@ -6,7 +6,7 @@ class Section_Details extends CI_Model {
         parent::__construct();
     }
 
-    public function get_by_user($resumeid){
+    public function get_by_user($resumeid, $section_name){
         
         //SELECT * FROM Resume
         //join Section on Section.Resume_Number = Resume.Resume_Number
@@ -20,8 +20,8 @@ class Section_Details extends CI_Model {
         $this->db->join('Section_Details', 'Section_Details.Section_Id = Section.Section_Sequence_Number');
         $this->db->join('Section_Type', 'Section_Type.Section_Type_Id = Section.Section_Type_Id');
 
-        $this->db->where('Section_Type.Name ', 'Meta');
-        $this->db->where('Resume.Resume_Number', '1' );
+        $this->db->where('Section_Type.Name ', $section_name);
+        $this->db->where('Resume.Resume_Number', $resumeid );
          
         $query = $this->db->get();
 

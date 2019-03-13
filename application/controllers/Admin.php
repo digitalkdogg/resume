@@ -15,7 +15,11 @@ class Admin extends CI_Controller {
     }
 
      public function index(){
-     	$this->load->view('admin/html_header');
+     	/******************************************
+      @todo : make user dynameic 
+      ******************************************/
+
+      $this->load->view('admin/html_header');
      	$this->load->view('body_container_fluid');
      	$this->load->view('admin/body_header');
      	$this->load->view('admin/body_wrapper');
@@ -97,7 +101,7 @@ class Admin extends CI_Controller {
 
         if ($resumeid != null ) {  
   	     	$this->load->model('Section_Details');
-  	     	$meta = array("data" => $this->Section_Details->get_by_user($resumeid));
+  	     	$meta = array("data" => $this->Section_Details->get_by_user($resumeid, 'Meta'));
   	     	$this->load->view('admin/body_details', array("meta" => $meta));
 
   	     	$this->load->view('admin/close_body');
