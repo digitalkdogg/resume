@@ -96,9 +96,9 @@ class Admin extends CI_Controller {
        	$this->load->view('admin/menu_left', array("site" => $site));
 
         if ($resumeid != null ) {  
-  	     	$this->load->model('MetaModel');
-  	     	$meta = array("data" => $this->MetaModel->get_by_user($resumeid));
-  	     	$this->load->view('admin/body_meta', array("meta" => $meta));
+  	     	$this->load->model('Section_Details');
+  	     	$meta = array("data" => $this->Section_Details->get_by_user($resumeid));
+  	     	$this->load->view('admin/body_details', array("meta" => $meta));
 
   	     	$this->load->view('admin/close_body');
         }

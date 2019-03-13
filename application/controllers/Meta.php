@@ -14,19 +14,20 @@ class Meta extends CI_Controller {
     	$data = $this->input->post('data');
     	$data = json_decode($data);
 
+
      	if ($this->session->userdata('islogin') != true) {
      		$data = null;
      	}
 
     	if ($data != NULL) {
 	    	foreach($data as $item) {
-	  	 		$dataarray[$item->metaid] = array('metaid'=>$item->metaid, 'FieldValue'=>$item->FieldValue);
+	  	 		$dataarray[$item->metaid] = array('Section_Details_Id'=>$item->metaid, 'Field_Value'=>$item->FieldValue);
 	    	}
 
 	    	if (sizeof($dataarray)>0) {
 	    		try {
-	    			$this->load->model('MetaModel');
-	     			$meta = array("data" => $this->MetaModel->save_meta($dataarray));
+	    			$this->load->model('UpdateModel');
+	     			$meta = array("data" => $this->UpdateModel->save_meta($dataarray));
 
 	     			foreach($meta as $response) {
 	     				return $this->output

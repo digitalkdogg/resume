@@ -3,9 +3,11 @@
 admin = {'meta': {},  
 	'core': core,
 	getchangedinput: function (obj) {
+
 		var returnobj={}
 		$.each(obj, function () {
 			if (this.changed == true) {
+				console.log(this.name);
 				returnobj[this.name] = {'metaid': this.metaid, 'FieldValue': this.value}
 			}
 		})
@@ -72,6 +74,7 @@ $('#the-guts button#save').click(function () {
 		$this = $(this)
 
 		var data = admin.getchangedinput(admin[obj]);
+		console.log(data);
 
 		if (Object.keys(data).length > 0 ) {
 			data = {'data': JSON.stringify(data)};

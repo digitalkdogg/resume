@@ -5,7 +5,7 @@
     }
 
     public function get_by_user($userid) {
-    	 $this->db->where('userid', $userid);
+    	 $this->db->where('User_Id', $userid);
         $query = $this->db->get('Resume');
         return $query->result();
     }
