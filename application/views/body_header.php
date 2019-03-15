@@ -1,16 +1,6 @@
 	<div class = "row" id = "header-container">
 			<div class = "col-xs-12 col-sm-1 col-md-1 col-lg-1" id = "social-container">
-				<div class = "social-wrap">
-				<!--	<a class = "fa fa-envelope sociallink" href = "#">E</a> -->
-				<a class = "sociallink" href = "#"><span class = "fa fa-envelope"></span></a>
-				</div>
-				<div class = "social-wrap">
-					<a class = "sociallink" href = "#"><span class = "fa fa-facebook"></span></a>
-				</div>
-				<div class = "social-wrap">
-					<a class = "sociallink" href = "#"><span class = "fa fa-github-alt"></span></a>
-				</div>
-
+				<?php $this->view('templates/social_icons'); ?>
 			</div>
 			<div class = "col-xs-12 col-sm-9 col-md-9 col-lg-9" id = "contact-container">
 				<div class = "col-xs-8">

@@ -86,7 +86,8 @@ class Admin extends CI_Controller {
 
      public function meta() {
 
-     	$resumeid = $this->uri->segment(3, 0);
+      $type = $this->uri->segment(3, 0);
+     	$resumeid = $this->uri->segment(4, 0);
 
      	$this->load->view('admin/html_header');
      	$this->load->view('body_container_fluid');
@@ -97,12 +98,17 @@ class Admin extends CI_Controller {
 
        	$this->load->model('Site_meta');
       	$site = array('data' => $this->Site_meta->get_menu());
+        foreach ($site as $link) {
+          foreach($link as $attr) {
+            $attr->resumeid = $resumeid;
+          }
+        }
+
        	$this->load->view('admin/menu_left', array("site" => $site));
 
         if ($resumeid != null ) {  
   	     	$this->load->model('Section_Details');
-  	     	$meta = array("data" => $this->Section_Details->get_by_user($resumeid, 'Meta'));
-  	    // 	$this->make_html($meta);
+  	     	$meta = array("data" => $this->Section_Details->get_by_user($resumeid, $type));
           $this->load->view('admin/body_details', array("meta" => $meta));
 
   	     	$this->load->view('admin/close_body');
@@ -113,24 +119,39 @@ class Admin extends CI_Controller {
 
      }
 
-     public function make_html($meta) {
-         $html = '';
-        foreach($meta as $key => $value) {
-          foreach($value as $data) {
+  public function social() {
 
-            if(strpos($data->Field_Type, 'Input') !== false) {
-              $html = '<input type = "text" id = "' . $data->Ele_Id . '" class = "data '. $data->Class_List .'" value = "' . $data->Field_Value . '" data-fieldid = "' . $data->Section_Details_Id .'" data-labelname = "' . $data->Field_Label . '" />';
-              $data->html = $html;
-           } else if(strpos($data->Field_Type, 'Image') !== false) {
-              $html = '<input type = "file" id = "' . $data->Ele_Id . '" class = "data thumbnail '. $data->Class_List .'" data-fieldid = "' . $data->Section_Details_Id .'" data-labelname = "' . $data->Field_Label . '" />';
-              $html = $html . '<div id = "profile-pic" class = "thumbnail"><img src = "'. $data->Field_Value .'" /></div>';
-              $data->html = $html;
-            }
+      $resumeid = $this->uri->segment(3, 0);
 
+      $this->load->view('admin/html_header');
+      $this->load->view('body_container_fluid');
+      $this->load->view('admin/body_header');
+      $this->load->view('admin/body_wrapper');
+      
+      if ($this->session->userdata('islogin')== true) {
+
+        $this->load->model('Site_meta');
+        $site = array('data' => $this->Site_meta->get_menu());
+        foreach ($site as $link) {
+          foreach($link as $attr) {
+            $attr->resumeid = $resumeid;
           }
-        
         }
-        return $meta;
+
+        $this->load->view('admin/menu_left', array("site" => $site));
+
+        if ($resumeid != null ) {  
+          $this->load->model('Section_Details');
+          $social = array("data" => $this->Section_Details->get_by_user($resumeid, 'SocialMedia'));
+
+          $this->load->view('admin/body_details', array("meta" => $social));
+
+          $this->load->view('admin/close_body');
+        }
+      } else {
+        redirect (base_url() . 'index.php/admin/login', 'refresh');
+      }
+
      }
 
 }//end class
