@@ -6,6 +6,7 @@
 
     public function get_menu() {
     	 $this->db->where('Name', 'Menu');
+    	 $this->db->order_by('Order', 'asc');
         $query = $this->db->get('SiteMeta');
         return $query->result();
     }
