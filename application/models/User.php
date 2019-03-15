@@ -12,22 +12,18 @@ class User extends CI_Model {
 
     public function get($data){
 
-        //select Meta.FieldValue, Fields.Name from Meta
-        //join Fields_Relationships on Fields_Relationships.id = Meta.fieldrelationshipid
-        //join Fields on Fields.id = Fields_Relationships.fieldid
-        //join Resume on Resume.id = Fields.resumeid 
-        //Join User on User.Userid = Resume.Userid
-        //where User.Username = 'KevinBollman'
-        //and Resume.id = 1
+        //select * from Resume
+        //join Section on Section.Resume_Number = Resume.Resume_Number
+        //join Section_Type on Section_Type.Section_Type_Id = Section.Section_Type_Id
+        //join Section_Details on Section_Details.Section_Id = Section.Section_Sequence_Number
+        //where Resume.Resume_Number = '1' and Section_Type.Name = 'Meta'
+        $this->db->select('Section_Details.Field_Label, Section_Details.Field_Value, Section_Details.Ele_Id, Section_Details.Field_Type, Section_Type.Name');
+        $this->db->join('Section', 'Section.Resume_Number = Resume.Resume_Number');
+        $this->db->join('Section_Type', 'Section_Type.Section_Type_Id = Section.Section_Type_Id');
+        $this->db->join('Section_Details', 'Section_Details.Section_Id = Section.Section_Sequence_Number');
 
-        $this->db->select('Meta.FieldValue, Fields.Name, Fields.eleid');
-        $this->db->join('Fields_Relationships', 'Fields_Relationships.id = Meta.fieldrelationshipid');
-        $this->db->join('Fields', 'Fields.id = Fields_Relationships.fieldid');
-        $this->db->join('Resume', 'Resume.id = Fields.resumeid');
-        $this->db->join('User', 'User.Userid = Resume.Userid');
-
-        $query = $this->db->where(array('User.Username'=>$data['username'], 'Resume.id'=> $data['resumeid']));
-        $query = $this->db->get('Meta');
+        $query = $this->db->where(array('Resume.Resume_Number'=> $data['resumeid']));
+        $query = $this->db->get('Resume');
         return $query->result();
         //return $this->db->get_where('posts', array('id' => $id))->row();
     }

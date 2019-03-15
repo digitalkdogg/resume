@@ -14,7 +14,6 @@ class Meta extends CI_Controller {
     	$data = $this->input->post('data');
     	$data = json_decode($data);
 
-
      	if ($this->session->userdata('islogin') != true) {
      		$data = null;
      	}

@@ -102,7 +102,8 @@ class Admin extends CI_Controller {
         if ($resumeid != null ) {  
   	     	$this->load->model('Section_Details');
   	     	$meta = array("data" => $this->Section_Details->get_by_user($resumeid, 'Meta'));
-  	     	$this->load->view('admin/body_details', array("meta" => $meta));
+  	    // 	$this->make_html($meta);
+          $this->load->view('admin/body_details', array("meta" => $meta));
 
   	     	$this->load->view('admin/close_body');
         }
@@ -110,6 +111,26 @@ class Admin extends CI_Controller {
      		redirect (base_url() . 'index.php/admin/login', 'refresh');
      	}
 
+     }
+
+     public function make_html($meta) {
+         $html = '';
+        foreach($meta as $key => $value) {
+          foreach($value as $data) {
+
+            if(strpos($data->Field_Type, 'Input') !== false) {
+              $html = '<input type = "text" id = "' . $data->Ele_Id . '" class = "data '. $data->Class_List .'" value = "' . $data->Field_Value . '" data-fieldid = "' . $data->Section_Details_Id .'" data-labelname = "' . $data->Field_Label . '" />';
+              $data->html = $html;
+           } else if(strpos($data->Field_Type, 'Image') !== false) {
+              $html = '<input type = "file" id = "' . $data->Ele_Id . '" class = "data thumbnail '. $data->Class_List .'" data-fieldid = "' . $data->Section_Details_Id .'" data-labelname = "' . $data->Field_Label . '" />';
+              $html = $html . '<div id = "profile-pic" class = "thumbnail"><img src = "'. $data->Field_Value .'" /></div>';
+              $data->html = $html;
+            }
+
+          }
+        
+        }
+        return $meta;
      }
 
 }//end class

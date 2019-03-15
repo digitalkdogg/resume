@@ -1,17 +1,35 @@
 $(function () {
-	$.ajax({
-    	url: 'index.php/Resume/About',
-    	type: 'GET',
-    	success: function(data){ 
-        	$('#body-header').html('About');
-			$('#body-content').html(data);
-			$('#body-container').removeClass('flipInY');
-    	},
-    	error: function(data) {
-        	$('#body-container #about').removeClass('hidden');
-    	}
-	});
 
+
+//	$.ajax({
+  //  	url: 'index.php/Resume/About',
+  //  	type: 'GET',
+  //  	success: function(data){ 
+  //      	$('#body-header').html('About');
+//			$('#body-content').html(data);
+//			$('#body-container').removeClass('flipInY');
+  //  	},
+    //	error: function(data) {
+      //  	$('#body-container #about').removeClass('hidden');
+   // 	}
+//	});
+
+	$('li').each(function () {
+		var datatype = $(this).attr('data-type');
+		if (datatype != undefined) {
+			switch (datatype) {
+				case 'InputHref': 
+					$(this).wrap('<a href = "'+$(this).text() + '"/>');
+					break;
+				case 'InputEmailHref':
+					$(this).wrap('<a href = "mailto://'+$(this).text()+ '"/>');
+					break;
+				case 'InputH2':
+					$(this).wrap('<h2>');
+					break;
+			}
+		}
+	})
 
 	$('li#about').click(function (e) {
 		e.preventDefault();

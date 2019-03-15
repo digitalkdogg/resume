@@ -27,6 +27,11 @@ class Resume extends CI_Controller {
 
     }
 
+    public function testfunction() {
+        var_dump('the function');
+        return null;
+    }
+
     public function index(){
         
     	//$query = $this->db->query('SELECT Username, Firstname, Lastname, Email, Phone FROM User');
