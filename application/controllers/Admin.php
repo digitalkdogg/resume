@@ -154,6 +154,9 @@ class Admin extends CI_Controller {
      }
 
   public function social() {
+    /******************************************
+    get rid of function.  replace by meta
+    *********************************************/
 
       $resumeid = $this->uri->segment(3, 0);
 

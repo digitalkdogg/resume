@@ -7,7 +7,6 @@ admin = {'meta': {},
 		var returnobj={}
 		$.each(obj, function () {
 			if (this.changed == true) {
-				console.log(this.name);
 				returnobj[this.name] = {'metaid': this.metaid, 'FieldValue': this.value}
 			}
 		})
@@ -22,60 +21,12 @@ admin = {'meta': {},
     			$(ele).addClass('hidden');
   			});
 		}, initdelay);
-	}
-
-}
-
-$('#the-guts.meta .data').each(function (index, val) {
-	admin.meta[$(this).attr('id')] = {'name': $(this).attr('data-labelname'), 
-									'value': $(this).val(),
-									'eleid': $(this).attr('id'),
-									'metaid': $(this).attr('data-fieldid')} 
-})
-
-$('#the-guts input.data').click(function (index, val) {
-	$('#save').prop("disabled", false); 
-})
-
-$('#the-guts input.data').change(function (index, val){
-	var lookupid = $(this).attr('id');
-	var oldval = admin.meta[lookupid].value;
-	var newval = $(this).val();
-	
-
-	if (oldval.trim() != newval.trim()) {
-		admin.meta[lookupid].value = newval.trim();
-		admin.meta[lookupid]['changed'] = true;
-		$(this).val(newval.trim());
-
-		$('#save').prop("disabled", false); 
-	} else {
-		admin.meta[lookupid].value = newval.trim();
-		admin.meta[lookupid]['changed'] = false;
-		$(this).val(oldval.trim());
-	}
-})
-
-$('#the-guts .resume-item').click(function () {
-	var id = $(this).attr('data-id');
-	if (id != undefined) {
-		window.location = 'admin/meta/settings/'+id
-	}
-})
-
-
-$('#the-guts button#save').click(function () {
-	/************************************************
-	Todo : make ajax url dynamic 
-	*********************************************/
-	var obj = $(this).attr('data-obj');
-	var table = $(this).attr('data-table');
-	if (obj != undefined) {
-		$this = $(this)
+	},
+	save_meta: function ($this) {
+		var obj = $($this).attr('data-obj');
+		var table = $($this).attr('data-table');
 
 		var data = admin.getchangedinput(admin[obj]);
-		console.log(data);
-
 		if (Object.keys(data).length > 0 ) {
 			data = {'data': JSON.stringify(data)};
 			$($this).find('.fa-spin').removeClass('hidden');
@@ -96,10 +47,132 @@ $('#the-guts button#save').click(function () {
 				}
 			})
 		} 
+	},
+	save_meta_file: function ($this , form_data) {
+		var obj = $($this).attr('data-obj');
+		var table = $($this).attr('data-table');
+		$($this).find('.fa-spin').removeClass('hidden');
+		$($this).find('span.txt').addClass('hidden');
+		$.ajax({
+			'url': admin.core.baseurl + '/index.php/Meta/save_meta_file',
+			'type': 'POST',
+			'data': form_data,
+			'cache': false,
+            'contentType': false,
+            'processData': false,
+			'complete': function (data) {
+				data = data.responseJSON; 
+				if (data.status == 'success') {
+					admin.displayStatus($('span#status'), 'Image Uploaded!', 2000);
+					$('#save').attr("disabled", "disabled");
+					admin.meta.profile.value = data.file;
+					admin.check_for_images();
+				} else {
+					admin.displayStatus($('span#status'), '<span class = "error">' + data.msg + '</span>', 10000);
+				}
+				setTimeout(function () {
+					admin.save_meta($this);
+				},1000)
+			
+				$($this).find('.fa-spin').addClass('hidden');
+				$($this).find('span.txt').removeClass('hidden');
+			}
+		})
+	},
+	check_for_images: function () {
+		/*********************************************
+		todo : flag if a file input is found    
+		*********************************************/
+
+		$('input[type = "file"]').each(function () {
+			admin.meta['foundfile'] = true;
+			var $this = $(this);
+			var fieldid = $(this).attr('data-fieldid');
+			var value = $(this).attr('value');
+
+			if (fieldid != undefined) {
+				$('div#profile-wrap').each(function () {
+					if ($(this).attr('data-fieldid')==fieldid) {
+						$(this).empty();
+						var picval = value;
+						
+						if (admin.meta.profile.value != '') {
+							picval = admin.meta.profile.value;
+						}
+						$('<img />', {
+							'src': admin.core.baseurl + 'uploads/' + picval,
+							'class': 'thumbnail',
+							'id': 'profile-pic',
+							'data-fieldid': fieldid
+						}).appendTo($(this));						
+					}
+				})
+			}
+		})
+	}
+}
+
+$('#the-guts.meta .data').each(function (index, val) {
+	admin.meta[$(this).attr('id')] = {'name': $(this).attr('data-labelname'), 
+									'value': $(this).val(),
+									'eleid': $(this).attr('id'),
+									'metaid': $(this).attr('data-fieldid')} 
+})
+
+$('#the-guts input.data').click(function (index, val) {
+	$('#save').prop("disabled", false); 
+})
+
+$('#the-guts input.data').change(function (index, val){
+	var lookupid = $(this).attr('id');
+	var oldval = admin.meta[lookupid].value;
+	var newval = $(this).val();
+	
+	try {
+		if (oldval.trim() != newval.trim()) {
+			admin.meta[lookupid].value = newval.trim();
+			admin.meta[lookupid]['changed'] = true;
+			if ($(this).attr('type') != 'file') {
+				$(this).val(newval.trim());
+			} else {
+				var fileval = $(this).val();
+				fileval = fileval.replace(/C:/g, '').replace(/fakepath/g,'');
+				$('#profile-wrap').html(fileval);
+			}
+			$('#save').prop("disabled", false); 
+		} else {
+			admin.meta[lookupid].value = newval.trim();
+			admin.meta[lookupid]['changed'] = false;
+			$(this).val(oldval.trim());
+		}
+	} catch (e) {console.log(e);}
+})
+
+$('#the-guts .resume-item').click(function () {
+	var id = $(this).attr('data-id');
+	if (id != undefined) {
+		window.location = 'admin/meta/settings/'+id
+	}
+})
+
+
+$('#the-guts button#save').click(function () {
+	var obj = $(this).attr('data-obj');
+
+	if (obj != undefined) {
+		$this = $(this)
+		if (admin.meta.foundfile != undefined) {
+			var file_data = $('#profile').prop('files')[0];
+        	var form_data = new FormData();
+        	form_data.append('file', file_data);
+        	admin.save_meta_file($this, form_data);
+    	} else {
+    		admin.save_meta($this)
+    	}
 	} 
 
 })
 
-//function callback(data) {alert('hi');}
+admin.check_for_images();
 
 })(jQuery);

@@ -9,6 +9,52 @@ class Meta extends CI_Controller {
         $this->load->library('session');
     }
 
+    public function save_meta_file() {
+    	/*************************************************
+    	todo : make user specific 
+    	       overwrite
+    	       make user id in session
+    	************************************************/
+    	$config['upload_path'] = 'uploads/';
+        $config['allowed_types'] = '*';
+        $config['max_filename'] = '255';
+        $config['encrypt_name'] = FALSE;
+        $config['max_size'] = '1024'; //1 MB
+
+         if (isset($_FILES['file']['name'])) {
+            if (0 < $_FILES['file']['error']) {
+                $response = 'Error during file upload' . $_FILES['file']['error'];
+             	$status = 'error';
+             } else {
+            	$filetype = $_FILES['file']['type'];
+            	$filetype = str_replace('image/', '', $filetype);
+            	$date = date('Y-m-d--H-i-s');
+
+            	$_FILES['file']['name'] = '1__' . $date .'.' .$filetype;
+                if (file_exists('uploads/' . $_FILES['file']['name'])) {
+                    $response = 'File already exists : uploads/' . $_FILES['file']['name'];
+                    $status = 'error';
+                } else {
+                    $this->load->library('upload', $config);
+                    if (!$this->upload->do_upload('file')) {
+                        $response=  $this->upload->display_errors();
+                        $status = 'error';
+                    } else {
+                    	$status = 'success';
+                    	$response = 'File successfully uploaded --' . $_FILES['file']['name'];
+                    }
+                }
+            }
+        } 
+        return $this->output
+	      		->set_content_type('application/json')
+	      		->set_output(json_encode(array(
+	      			'msg' => $response, 
+	      			'file' => $_FILES['file']['name'],
+	      			'status'=> $status)));
+
+    }
+
     public function save_meta() {
 
     	$data = $this->input->post('data');

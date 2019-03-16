@@ -167,9 +167,7 @@ i.fas.fa-receipt:before {
     width:100px;
     height:100px;
     display: inline-block;
-}
-
-#the-guts.meta input.thumbnail {
-    display: inline-block;
-    vertical-align: top;
+    position: relative;
+    top: -25px;
+    overflow: hidden;
 }

@@ -4,8 +4,12 @@
 				<i class="fas fa-receipt"></i>
 				<?php foreach($meta as $key => $value) { 
 					foreach($value as $data) { 
+
 						if(strpos($data->Field_Type, 'Input') !== false) {
 							$this->view('templates/admin/meta_field_input_text', array('data'=>$data));
+						} 
+						if (strpos($data->Field_Type, 'Profile') !== false) {
+							$this->view('templates/admin/meta_field_input_file', array('data'=>$data));
 						}
 					}
 				} ?>
