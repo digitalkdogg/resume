@@ -59,7 +59,7 @@ $('#the-guts input.data').change(function (index, val){
 $('#the-guts .resume-item').click(function () {
 	var id = $(this).attr('data-id');
 	if (id != undefined) {
-		window.location = 'admin/meta/'+id
+		window.location = 'admin/meta/settings/'+id
 	}
 })
 
