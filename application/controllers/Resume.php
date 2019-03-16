@@ -16,10 +16,15 @@ class Resume extends CI_Controller {
         $this->load->view('html_header');
         $this->load->view('body_container');
 
-        $this->load->model('user');
-        $query=$this->user->get(array('username'=>$username, 'resumeid'=>$resumeid));
-        $queryresults['query'] = $query;
+        if(is_null($resumeid) != true) {
+            $this->load->model('user');
+            $query=$this->user->get(array('username'=>$username, 'resumeid'=>$resumeid));
+            $queryresults['query'] = $query;
+        } else {
+            $queryresults['query'] = Array();
+        }   
         $this->load->view('body_header', $queryresults);
+        $this->load->view('nav_menu');
         $this->load->view('row_spacer');
         $this->load->view('body');
         $this->load->view('modal');

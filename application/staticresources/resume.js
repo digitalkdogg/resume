@@ -1,6 +1,5 @@
 $(function () {
 
-
 //	$.ajax({
   //  	url: 'index.php/Resume/About',
   //  	type: 'GET',
@@ -29,6 +28,12 @@ $(function () {
 					break;
 			}
 		}
+	})
+
+	hide_social_menu();
+
+	$(window).resize(function () {
+		hide_social_menu();
 	})
 
 	$('li#about').click(function (e) {
@@ -232,13 +237,14 @@ $(function () {
 
 	$('#menu-container li').mouseover(function () {
 		if ($(this).hasClass('active') == false ) {
-			$(this).find('a').css('color', '#fff');
+			$(this).find('a').css({'color': '#000', 'text-decoration': 'underline'});
 		}
 	});
 
 	$('#menu-container li').mouseleave(function () {
 		if ($(this).hasClass('active') == false ) {
-			$(this).find('a').css('color', '#000');
+			$(this).find('a').css({'color': '#000', 'text-decoration': 'none'});
+
 		}
 	});
 
@@ -445,4 +451,31 @@ function load_project_skills(thisobj) {
     		
     		}
 		});
+}
+
+function isMobile() {
+    ///<summary>Detecting whether the browser is a mobile browser or desktop browser</summary>
+    ///<returns>A boolean value indicating whether the browser is a mobile browser or not</returns>
+
+    if (sessionStorage.desktop) // desktop storage 
+        return false;
+    else if (localStorage.mobile) // mobile storage
+        return true;
+
+    // alternative
+    var mobile = ['iphone','ipad','android','blackberry','nokia','opera mini','windows mobile','windows phone','iemobile']; 
+    for (var i in mobile) if (navigator.userAgent.toLowerCase().indexOf(mobile[i].toLowerCase()) > 0) return true;
+
+    // nothing found.. assume desktop
+    return false;
+}
+
+function hide_social_menu() {
+	if (isMobile() == true) {
+		var social = $('#social-container')
+		$('#social-container.mobile-social').html($(social).html())
+		$('#social-container').addClass('hidden');
+	} else {
+		$('#social-container').removeClass('hidden');
+	}
 }

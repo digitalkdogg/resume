@@ -3,14 +3,11 @@
 				<?php $this->view('templates/social_icons'); ?>
 			</div>
 			<div class = "col-xs-12 col-sm-9 col-md-9 col-lg-9" id = "contact-container">
-				<div class = "col-xs-8">
+				<div class = "col-xs-12">
 			
 				<?php $this->view('templates/meta_li'); ?>
 		
         		</div>
-				<div id = "mobile-logo" class = "mobile-hidden col-xs-4">
-				
-				</div>
 			</div>
 
 			<div class = "col-xs-2 col-sm-2 col-md-2 col-lg-2" id = "photo-container">
