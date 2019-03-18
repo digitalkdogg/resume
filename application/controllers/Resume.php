@@ -12,9 +12,6 @@ class Resume extends CI_Controller {
     public function view() {
         $username = $this->uri->segment(3, 0);
         $resumeid = $this->uri->segment(4, 0);
-        
-        $this->load->view('html_header');
-        $this->load->view('body_container');
 
         if(is_null($resumeid) != true) {
             $this->load->model('user');
@@ -24,6 +21,9 @@ class Resume extends CI_Controller {
             $header['query'] = Array();
         }   
 
+        $this->load->view('html_header', $header);
+        $this->load->view('body_container');
+
         $this->load->view('body_header', $header);
         $this->load->view('nav_menu');
         $this->load->view('row_spacer');
@@ -31,11 +31,6 @@ class Resume extends CI_Controller {
         $this->load->view('modal');
         $this->load->view('footer', $header);
 
-    }
-
-    public function testfunction() {
-        var_dump('the function');
-        return null;
     }
 
     public function index(){

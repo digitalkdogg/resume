@@ -32,6 +32,11 @@ $(function () {
 
 	hide_social_menu();
 
+	for (x=0; x<resume.menu.hide.length; x++) {
+		var ele = resume.menu.hide[x].toLowerCase();
+		$('#' + ele).addClass('hidden');
+	}
+
 	$(window).resize(function () {
 		hide_social_menu();
 	})

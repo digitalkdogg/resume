@@ -145,6 +145,7 @@ class Admin extends CI_Controller {
           if (sizeof($meta['data']) != 0) {
             $this->load->view('admin/body_details', array("meta" => $meta));
           }
+
   	     	$this->load->view('admin/close_body');
         }
 	    } else {

@@ -15,6 +15,18 @@
     resume['baseurl'] = '<?php echo base_url(); ?>';
     resume['siteurl'] = '<?php echo current_url(); ?>';
 
+    <?php foreach($query as $row) {
+        if (strpos($row->Field_Type, 'Checkbox') !== false) {
+            if ($row->Field_Value == 'checked') {
+            $splitval = explode(":", $row->Field_Type); ?>
+
+            resume['menu'] = {}
+            resume.menu['hide'] = new Array();
+            resume.menu.hide.push('<?php echo $splitval[1]; ?>');
+<?php   }
+    }
+    }
+    ?>
 	</script>
 
 </head>

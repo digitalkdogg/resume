@@ -6,6 +6,7 @@ admin = {'meta': {},
 
 		var returnobj={}
 		$.each(obj, function () {
+			console.log(this);
 			if (this.changed == true) {
 				returnobj[this.name] = {'metaid': this.metaid, 'FieldValue': this.value}
 			}
@@ -125,6 +126,19 @@ admin = {'meta': {},
 	}
 }
 
+$('#the-guts.meta div.checkbox').each(function (index, val) {
+	var checked = $(this).attr('data-value');
+	if (checked == 'checked') {
+		$(this).addClass('checked');
+	}
+	admin.meta[$(this).attr('id')] = {'name': $(this).attr('data-labelname'), 
+									'value': $(this).attr('data-value'),
+									'eleid': $(this).attr('id'),
+									'metaid': $(this).attr('data-fieldid')} 
+
+})
+
+
 $('#the-guts.meta select.data').each(function (index, val) {
 	if ($(this).attr('data-value') != '') {
 		$(this).val($(this).attr('data-value'));
@@ -142,6 +156,21 @@ $('#the-guts.meta input.data').each(function (index, val) {
 									'metaid': $(this).attr('data-fieldid')} 
 })
 
+$('#the-guts div.checkbox').click(function () {
+	var lookupid = $(this).attr('id');
+	if ($(this).hasClass('checked')== true) {
+		$(this).removeClass('checked');
+		$(this).attr('data-value', '');
+	} else {
+		$(this).addClass('checked');
+		$(this).attr('data-value', 'checked');
+	}
+	admin.meta[lookupid]['value'] = $(this).attr('data-value');
+	admin.meta[lookupid]['changed'] = true;
+	$('#save').prop("disabled", false); 
+
+})
+
 $('#the-guts input.data').click(function (index, val) {
 	$('#save').prop("disabled", false); 
 })
@@ -150,8 +179,6 @@ $('#the-guts .data').change(function (index, val){
 	var lookupid = $(this).attr('id');
 	var oldval = admin.meta[lookupid].value;
 	var newval = $(this).val();
-	
-	console.log('hiello');
 
 	try {
 		if (oldval.trim() != newval.trim()) {
