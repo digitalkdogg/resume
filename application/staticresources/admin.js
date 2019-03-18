@@ -53,31 +53,44 @@ admin = {'meta': {},
 		var table = $($this).attr('data-table');
 		$($this).find('.fa-spin').removeClass('hidden');
 		$($this).find('span.txt').addClass('hidden');
-		$.ajax({
-			'url': admin.core.baseurl + '/index.php/Meta/save_meta_file',
-			'type': 'POST',
-			'data': form_data,
-			'cache': false,
-            'contentType': false,
-            'processData': false,
-			'complete': function (data) {
-				data = data.responseJSON; 
-				if (data.status == 'success') {
-					admin.displayStatus($('span#status'), 'Image Uploaded!', 2000);
-					$('#save').attr("disabled", "disabled");
-					admin.meta.profile.value = data.file;
-					admin.check_for_images();
-				} else {
-					admin.displayStatus($('span#status'), '<span class = "error">' + data.msg + '</span>', 10000);
+
+		var profilechanged = false;
+		$.each(admin.meta, function () {
+			if (this.eleid == 'profile') {
+				if (this.changeed == true) {
+					profilechanged = true;
 				}
-				setTimeout(function () {
-					admin.save_meta($this);
-				},1000)
-			
-				$($this).find('.fa-spin').addClass('hidden');
-				$($this).find('span.txt').removeClass('hidden');
 			}
 		})
+		if (profilechanged == true) {
+			$.ajax({
+				'url': admin.core.baseurl + '/index.php/Meta/save_meta_file',
+				'type': 'POST',
+				'data': form_data,
+				'cache': false,
+	            'contentType': false,
+	            'processData': false,
+				'complete': function (data) {
+					data = data.responseJSON; 
+					if (data.status == 'success') {
+						admin.displayStatus($('span#status'), 'Image Uploaded!', 2000);
+						$('#save').attr("disabled", "disabled");
+						admin.meta.profile.value = data.file;
+						admin.check_for_images();
+					} else {
+						admin.displayStatus($('span#status'), '<span class = "error">' + data.msg + '</span>', 10000);
+					}
+					setTimeout(function () {
+						admin.save_meta($this);
+					},1000)
+				
+					$($this).find('.fa-spin').addClass('hidden');
+					$($this).find('span.txt').removeClass('hidden');
+				}
+			})
+		} else {
+			admin.save_meta($this);
+		}
 	},
 	check_for_images: function () {
 		/*********************************************
@@ -112,7 +125,17 @@ admin = {'meta': {},
 	}
 }
 
-$('#the-guts.meta .data').each(function (index, val) {
+$('#the-guts.meta select.data').each(function (index, val) {
+	if ($(this).attr('data-value') != '') {
+		$(this).val($(this).attr('data-value'));
+	}
+	admin.meta[$(this).attr('id')] = {'name': $(this).attr('data-labelname'), 
+									'value': $(this).attr('data-value'),
+									'eleid': $(this).attr('id'),
+									'metaid': $(this).attr('data-fieldid')} 
+})
+
+$('#the-guts.meta input.data').each(function (index, val) {
 	admin.meta[$(this).attr('id')] = {'name': $(this).attr('data-labelname'), 
 									'value': $(this).val(),
 									'eleid': $(this).attr('id'),
@@ -123,11 +146,13 @@ $('#the-guts input.data').click(function (index, val) {
 	$('#save').prop("disabled", false); 
 })
 
-$('#the-guts input.data').change(function (index, val){
+$('#the-guts .data').change(function (index, val){
 	var lookupid = $(this).attr('id');
 	var oldval = admin.meta[lookupid].value;
 	var newval = $(this).val();
 	
+	console.log('hiello');
+
 	try {
 		if (oldval.trim() != newval.trim()) {
 			admin.meta[lookupid].value = newval.trim();

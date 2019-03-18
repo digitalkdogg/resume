@@ -11,6 +11,9 @@
 						if (strpos($data->Field_Type, 'Profile') !== false) {
 							$this->view('templates/admin/meta_field_input_file', array('data'=>$data));
 						}
+						if (strpos($data->Field_Type, 'Select')  !== false) {
+							$this->view('templates/admin/meta_field_select', array('data'=>$data));
+						}
 					}
 				} ?>
 				<div class = "col-lg-2 offset-lg-4">

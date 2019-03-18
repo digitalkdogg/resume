@@ -1,0 +1,7 @@
+div#header-container, div#social-container, div#contact-container {
+	background: #267de0;
+}
+
+.sociallink span:before {
+	color : #FFC600;
+}

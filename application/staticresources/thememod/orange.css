@@ -1,0 +1,16 @@
+div#header-container, div#social-container, div#contact-container {
+	background: #c16926;
+}
+
+.sociallink span:before {
+	color : #c16926;
+}
+
+#menu-container li a:hover {
+	background: #3e96d9;
+}
+
+#menu-container li.active a {
+    background: #3E96D9;
+    color: white;
+}

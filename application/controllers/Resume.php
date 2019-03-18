@@ -19,16 +19,17 @@ class Resume extends CI_Controller {
         if(is_null($resumeid) != true) {
             $this->load->model('user');
             $query=$this->user->get(array('username'=>$username, 'resumeid'=>$resumeid));
-            $queryresults['query'] = $query;
+            $header['query'] = $query;
         } else {
-            $queryresults['query'] = Array();
+            $header['query'] = Array();
         }   
-        $this->load->view('body_header', $queryresults);
+
+        $this->load->view('body_header', $header);
         $this->load->view('nav_menu');
         $this->load->view('row_spacer');
         $this->load->view('body');
         $this->load->view('modal');
-        $this->load->view('footer');
+        $this->load->view('footer', $header);
 
     }
 

@@ -1,7 +1,7 @@
 <?php
 foreach ($query as $row)
 { 
-	if ($row->Name == 'MetaProfile') {
-	?>	<img src = "../<?php echo $row->Field_Value; ?>" />
+	if ($row->Field_Type == 'ImageProfile') {
+	?>	<img src = "<?php echo base_url() . 'uploads/' . $row->Field_Value; ?>" />
 	<?php }
 } ?>
