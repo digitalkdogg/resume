@@ -11,6 +11,13 @@ application/logs/*
 !application/logs/.htaccess
 
 composer.lock
+composer.json
+application/index.html
+
+contributing.md
+*/index.php
+license.txt
+readme.rst
 
 user_guide_src/build/*
 user_guide_src/cilexer/build/*
