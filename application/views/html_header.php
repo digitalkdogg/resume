@@ -17,14 +17,18 @@
 
     <?php foreach($query as $row) {
         if (strpos($row->Field_Type, 'Checkbox') !== false) {
-            if ($row->Field_Value == 'checked') {
-            $splitval = explode(":", $row->Field_Type); ?>
-
-            resume['menu'] = {}
-            resume.menu['hide'] = new Array();
-            resume.menu.hide.push('<?php echo $splitval[1]; ?>');
-<?php   }
-    }
+            if ($row->Field_Value != 'checked') {
+                $splitval = null;
+                $splitval = explode(":", $row->Field_Type); ?>
+                if (resume.menu == undefined) {
+                    resume['menu'] = {}
+                }
+                if (resume.menu.hide == undefined) {
+                    resume.menu['hide'] = new Array();
+                }
+                resume.menu.hide.push('<?php echo $splitval[1]; ?>');
+<?php       }
+        }
     }
     ?>
 	</script>
