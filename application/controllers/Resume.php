@@ -52,9 +52,19 @@ class Resume extends CI_Controller {
     }
 
     public function About() {
-        $this->load->model('about');
-        $html = $this->about->get('1');
-        echo $html->Details;
+        $resumeid = $this->input->post('resumeid');
+        $section = $this->input->post('section_type');
+        try {
+            $this->load->model('about');
+            $html = $this->about->get_by_resume($resumeid, $section);
+             return $this->output
+             ->set_content_type('application/json')
+            ->set_output(json_encode(array('html'=> $html)));
+           // $html = $this->about->get('15');
+            //echo $html->Details;
+        } catch(exception $e) {
+            echo 'error';
+        }
     }
 
     public function Education() {

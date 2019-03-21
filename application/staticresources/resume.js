@@ -1,5 +1,35 @@
 $(function () {
 
+/**************************************************
+need to get the resume id and make it dynamic 
+****************************************************/
+
+if ($('#body-container').hasClass('about')==true) {
+
+} else if ($('#body-container').hasClass('education')==true) {
+	
+} else if ($('#body-container').hasClass('experience')==true) {
+	
+} else if ($('#body-container').hasClass('skills')==true) {
+	
+} else {
+		$.ajax({
+    	url: resume.baseurl + 'index.php/Resume/About',
+    	type: 'POST',
+    	data: {'resumeid': '1', 'section_type': 'about'},
+    	success: function(data){ 
+    		$.each(data.html, function () {
+    			$('#body-header').html('About');
+				$('#body-content').html(this.Field_Value);
+				$('#body-container').removeClass('flipInY');	
+    		})
+        	
+    	},
+    	error: function(data) {
+        	$('#body-container #about').removeClass('hidden');
+    	}
+	});
+}
 //	$.ajax({
   //  	url: 'index.php/Resume/About',
   //  	type: 'GET',

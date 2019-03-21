@@ -6,7 +6,7 @@
 
 <?php foreach ($query as $row) {
 	if ($row->Field_Type== 'SelectColor') {?>
-		<link rel="stylesheet" href="<?php echo base_url(); ?>application/staticresources/thememod/<?php echo $row->Field_Value; ?>.css" /> -->
+		<link rel="stylesheet" href="<?php echo base_url(); ?>application/staticresources/thememod/<?php echo $row->Field_Value; ?>.css" /> 
 <?php 	} 
 } ?>
 </body>

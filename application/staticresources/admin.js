@@ -156,6 +156,13 @@ $('#the-guts.meta input.data').each(function (index, val) {
 									'metaid': $(this).attr('data-fieldid')} 
 })
 
+$('#the-guts.meta textarea.data').each(function (index, val) {
+	admin.meta[$(this).attr('id')] = {'name': $(this).attr('data-labelname'), 
+									'value': $(this).val(),
+									'eleid': $(this).attr('id'),
+									'metaid': $(this).attr('data-fieldid')} 
+})
+
 $('#the-guts div.checkbox').click(function () {
 	var lookupid = $(this).attr('id');
 	if ($(this).hasClass('checked')== true) {
@@ -184,12 +191,14 @@ $('#the-guts .data').change(function (index, val){
 		if (oldval.trim() != newval.trim()) {
 			admin.meta[lookupid].value = newval.trim();
 			admin.meta[lookupid]['changed'] = true;
-			if ($(this).attr('type') != 'file') {
-				$(this).val(newval.trim());
-			} else {
-				var fileval = $(this).val();
-				fileval = fileval.replace(/C:/g, '').replace(/fakepath/g,'');
-				$('#profile-wrap').html(fileval);
+			if ($(this).attr('type') != undefined) {
+				if ($(this).attr('type') != 'file') {
+					$(this).val(newval.trim());
+				} else {
+					var fileval = $(this).val();
+					fileval = fileval.replace(/C:/g, '').replace(/fakepath/g,'');
+					$('#profile-wrap').html(fileval);
+				}
 			}
 			$('#save').prop("disabled", false); 
 		} else {
