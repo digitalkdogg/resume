@@ -11,9 +11,9 @@
     <script type="text/javascript" src="<?php echo base_url(); ?>application/staticresources/jquery-3-2-1.js"></script>
 
     <script type="text/javascript">
-    var resume = {};
-    resume['baseurl'] = '<?php echo base_url(); ?>';
-    resume['siteurl'] = '<?php echo current_url(); ?>';
+    var sitemeta = {};
+    sitemeta['baseurl'] = '<?php echo base_url(); ?>';
+    sitemeta['siteurl'] = '<?php echo current_url(); ?>';
 
     <?php foreach($query as $row) {
         if (strpos($row->Field_Type, 'Checkbox') !== false) {
