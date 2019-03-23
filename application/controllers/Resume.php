@@ -26,7 +26,7 @@ class Resume extends CI_Controller {
             $header['query'] = Array();
         }   
 
-        $this->load->view('html_header', $header);
+        $this->load->view('html_header', $header);  //header is passed in order to create js
         $this->load->view('body_container', array('resumeid' => $resumeid));
 
         $this->load->view('body_header', $header);
@@ -63,10 +63,8 @@ class Resume extends CI_Controller {
             $this->load->model('about');
             $html = $this->about->get_by_resume($resumeid, $section);
              return $this->output
-             ->set_content_type('application/json')
-            ->set_output(json_encode(array('html'=> $html)));
-           // $html = $this->about->get('15');
-            //echo $html->Details;
+                ->set_content_type('application/json')
+                ->set_output(json_encode(array('html'=> $html)));
         } catch(exception $e) {
             echo 'error';
         }

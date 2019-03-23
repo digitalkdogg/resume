@@ -182,9 +182,21 @@ var resume = {};
     				data: {'resumeid': this.data.resumeid, 'section_type': 'about'},
     				success: function(data){ 
     					$('#body-content').empty();
+    					$('<div />', {
+    						'id': 'objective'
+    					}).appendTo('#body-content')
     					$.each(data.html, function () {
     						$('#body-header').html('About');
-							$('#body-content').append(this.Field_Value);
+    						
+    						$('<div />', {
+    							'html': this.Field_Value
+    						}).appendTo('#body-content #'+this.Ele_Id);
+
+    						if (this.Field_Type.indexOf('Checkbox')>=0) {
+    							$('<div />', {
+    								'id': this.Ele_Id
+    							}).appendTo('#body-content');
+    						}
     					})
     				},
     				error: function(data) {

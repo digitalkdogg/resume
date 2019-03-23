@@ -18,15 +18,19 @@
 
     <?php foreach($query as $row) {
         if (strpos($row->Field_Type, 'Checkbox') !== false) {
-            if ($row->Field_Value != 'checked') {
-                $splitval = null;
-                $splitval = explode(":", $row->Field_Type); ?>
+            if ($row->Name == 'settings') {
+                if ($row->Field_Value != 'checked') {
+                    $splitval = null;
+                    $splitval = explode(":", $row->Field_Type); ?>
                 
-                if (menu.hide == undefined) {
-                    menu['hide'] = new Array();
+                    if (menu.hide == undefined) {
+                        menu['hide'] = new Array();
+                    }
+                    menu.hide.push('<?php echo $splitval[1]; ?>');
+<?php           } else {
+
                 }
-                menu.hide.push('<?php echo $splitval[1]; ?>');
-<?php       }
+            }
         }
     }
     ?>
