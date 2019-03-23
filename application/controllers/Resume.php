@@ -12,6 +12,11 @@ class Resume extends CI_Controller {
     public function view() {
         $username = $this->uri->segment(3, 0);
         $resumeid = $this->uri->segment(4, 0);
+        $page = $this->uri->segment(5, 0);
+
+        if ($page == 0) {
+            $page = 'about';
+        }
 
         if(is_null($resumeid) != true) {
             $this->load->model('user');
@@ -22,12 +27,12 @@ class Resume extends CI_Controller {
         }   
 
         $this->load->view('html_header', $header);
-        $this->load->view('body_container');
+        $this->load->view('body_container', array('resumeid' => $resumeid));
 
         $this->load->view('body_header', $header);
         $this->load->view('nav_menu');
         $this->load->view('row_spacer');
-        $this->load->view('body');
+        $this->load->view('body', array('type'=>$page));
         $this->load->view('modal');
         $this->load->view('footer', $header);
 

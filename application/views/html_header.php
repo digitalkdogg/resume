@@ -14,19 +14,18 @@
     var sitemeta = {};
     sitemeta['baseurl'] = '<?php echo base_url(); ?>';
     sitemeta['siteurl'] = '<?php echo current_url(); ?>';
+    menu = {}
 
     <?php foreach($query as $row) {
         if (strpos($row->Field_Type, 'Checkbox') !== false) {
             if ($row->Field_Value != 'checked') {
                 $splitval = null;
                 $splitval = explode(":", $row->Field_Type); ?>
-                if (resume.menu == undefined) {
-                    resume['menu'] = {}
+                
+                if (menu.hide == undefined) {
+                    menu['hide'] = new Array();
                 }
-                if (resume.menu.hide == undefined) {
-                    resume.menu['hide'] = new Array();
-                }
-                resume.menu.hide.push('<?php echo $splitval[1]; ?>');
+                menu.hide.push('<?php echo $splitval[1]; ?>');
 <?php       }
         }
     }

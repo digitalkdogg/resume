@@ -3,19 +3,33 @@ var resume = {};
 	"use strict";
 	resume = {
 	 	init : function () {
-			resume['baseurl'] = sitemeta['baseurl'];
-			resume['siteurl'] = sitemeta['siteurl'];
+	 		resume['data'] = {};
+			resume.data.baseurl = sitemeta['baseurl'];
+			resume.data.siteurl = sitemeta['siteurl'];
+
+			var resumeid = $('body').attr('data-resumeid');
+			if (resumeid != undefined) {
+				resume.data['resumeid'] = resumeid;
+			}
+
+			if(menu != undefined) {
+				if (resume.menu == undefined) {
+					resume.menu = {}
+				}
+				if (resume.menu.hide == undefined) {
+					resume.menu.hide = {}
+				}
+				resume.menu = menu;
+			}
 
 			if ($('#body-container').hasClass('about')==true) {
-
+				this.getabout();
 			} else if ($('#body-container').hasClass('education')==true) {
 	
 			} else if ($('#body-container').hasClass('experience')==true) {
 	
 			} else if ($('#body-container').hasClass('skills')==true) {
 	
-			} else {
-				this.getabout();
 			}
 
 			$('li').each(function () {
@@ -37,11 +51,8 @@ var resume = {};
 
 			resume.hide_social_menu();
 
-			if (resume.menu != undefined) {
-				for (x=0; x<resume.menu.hide.length; x++) {
-					var ele = resume.menu.hide[x].toLowerCase();
-					$('#' + ele).addClass('hidden');
-				}
+			if (resume.menu.hide != undefined) {
+				this.check_menu_disabled();
 			}
 
 			$(window).resize(function () {
@@ -161,21 +172,26 @@ var resume = {};
 			});
 		}, 
 		getabout: function () {
-			$.ajax({
-    			url: resume.baseurl + 'index.php/Resume/About',
-    			type: 'POST',
-    			data: {'resumeid': '1', 'section_type': 'about'},
-    			success: function(data){ 
-    				$.each(data.html, function () {
-    					$('#body-header').html('About');
-						$('#body-content').html(this.Field_Value);
-						$('#body-container').removeClass('flipInY');	
-    				})
-    			},
-    			error: function(data) {
-        			$('#body-container #about').removeClass('hidden');
-    			}
-			});
+			/*******************************************************
+			todo : bring up 404 if check_menu_disabled returns true
+			*******************************************************/
+			if (this.check_menu_disabled('about')==false) {
+				$.ajax({
+    				url: resume.data.baseurl + 'index.php/Resume/About',
+    				type: 'POST',
+    				data: {'resumeid': this.data.resumeid, 'section_type': 'about'},
+    				success: function(data){ 
+    					$('#body-content').empty();
+    					$.each(data.html, function () {
+    						$('#body-header').html('About');
+							$('#body-content').append(this.Field_Value);
+    					})
+    				},
+    				error: function(data) {
+        				$('#body-container #about').removeClass('hidden');
+    				}
+				});
+			}
 		},
 		isMobile: function () {
 			if (sessionStorage.desktop) // desktop storage 
@@ -213,6 +229,21 @@ var resume = {};
 			/***************************************
 			comming soon 
 			**************************************/
+		},
+		check_menu_disabled: function (menu) {
+			if (resume.menu.hide != undefined) {
+				for (var x=0; x<resume.menu.hide.length; x++) {
+					if (menu == undefined) {
+				 		var ele = resume.menu.hide[x].toLowerCase();
+						$('#' + ele).addClass('hidden');
+				 	} else {
+						if (menu.toLowerCase() == resume.menu.hide[x].toLowerCase()) {
+				 			return true;
+					 	}
+					}
+				}
+			} 
+			return false;
 		},
 		load_skill_dets : function (skills, ele) {
 			var name = $(ele).data('name');
