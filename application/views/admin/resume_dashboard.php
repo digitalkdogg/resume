@@ -15,6 +15,14 @@
 					<?php
 					}
 				} ?>
+
+					<div class = "resume-item resume-item-new col-lg-3">
+							
+							<div class = "resume-desc">
+								Add New Resume <br />
+								<span class = "super-large-plus">+</span>
+							</div>
+						</div>
 				
 			</div>
 		</div>

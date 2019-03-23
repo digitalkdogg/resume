@@ -213,6 +213,10 @@ $('#the-guts .resume-item').click(function () {
 	var id = $(this).attr('data-id');
 	if (id != undefined) {
 		window.location = 'admin/meta/settings/'+id
+	} else {
+		if ($(this).hasClass('resume-item-new')==true) {
+			console.log('function not done yet..... see ".resume-item click event" of admin.js');
+		}
 	}
 })
 

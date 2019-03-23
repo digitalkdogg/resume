@@ -92,7 +92,7 @@ div#the-guts {
 }
 
 .resume-item.col-lg-3 {
-    background: #75ADEA;
+    background: #267de0;
     opacity: .9;
     margin: 0 10px;
     min-height: 200px;
@@ -103,7 +103,11 @@ div#the-guts {
 
 .resume-item.col-lg-3:hover {
     opacity: 1;
-    background: #267de0;
+    background: #75ADEA;
+}
+
+.resume-item.resume-item-new {
+    background: #777;
 }
 
 .resume-title {
@@ -191,4 +195,8 @@ i.fas.fa-receipt:before {
     position: relative;
     top: -25px;
     overflow: hidden;
+}
+
+span.super-large-plus {
+    font-size: 5em;
 }
