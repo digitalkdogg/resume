@@ -17,5 +17,15 @@ class UpdateModel extends CI_Model {
 		}    
     }
 
+    public function insert_meta($data) {
+        try {
+            $this->db->insert('Section_Details', $data);
+            $id = $this->db->insert_id();
+            return $id;
+        } catch (Exception $e) {
+            return 'error : ' . $e->getMessage();
+        }  
+    }
+
 }
 ?>

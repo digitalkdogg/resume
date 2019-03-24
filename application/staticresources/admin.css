@@ -200,3 +200,7 @@ i.fas.fa-receipt:before {
 span.super-large-plus {
     font-size: 5em;
 }
+
+.modal-body textarea {
+    width:400px;
+}

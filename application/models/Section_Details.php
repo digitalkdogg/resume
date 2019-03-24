@@ -27,4 +27,16 @@ class Section_Details extends CI_Model {
 
         return $query->result();
     }
+
+    public function get_by_id($id){
+
+        $this->db->select('*');
+        $this->db->from('Section_Details');
+
+        $this->db->where('Section_Details.Section_Details_Id ', $id);
+         
+        $query = $this->db->get();
+
+        return $query->result();
+    }
 }

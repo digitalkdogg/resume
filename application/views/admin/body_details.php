@@ -1,6 +1,7 @@
 <div class = "col-lg-9">
 		<div class = "row">
 			<div class = "col-lg-12 meta" id ="the-guts">
+				<div id = "fields-wrapper">
 				<i class="fas fa-receipt"></i>
 				<?php foreach($meta as $key => $value) { 
 					foreach($value as $data) { 
@@ -22,10 +23,11 @@
 
 					}
 				} ?>
+				</div>
 				<div class = "col-lg-2 offset-lg-4">
 					
 				</div>
-				<div class = "col-lg-7">
+				<div class = "col-lg-7" id = "the-buttons">
 					<button id = "save" data-obj = "meta" data-table="Meta/save_meta" class = "btn btn-primary" disabled = "disabled">
 						<i class="fa fa-spinner fa-spin hidden"></i>
 						<span class = "txt">Save</span>

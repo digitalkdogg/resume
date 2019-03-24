@@ -13,6 +13,18 @@ admin = {'meta': {},
 		})
 		return returnobj;
 	},
+	sizeofobj: function (obj) {
+    	var count = 0,
+        	key;
+
+    	for (key in obj) {
+        	if (obj.hasOwnProperty(key)) {
+            	count++;
+        	}
+    	}
+
+    	return count;
+	},
 	displayStatus: function (ele, statustxt, initdelay) {
 		$(ele).html(statustxt);
 		$(ele).removeClass('hidden');
@@ -123,6 +135,37 @@ admin = {'meta': {},
 				})
 			}
 		})
+	},
+	check_for_sisters: function () {
+		if (admin.sizeofobj(admin.meta.sister)>=0) {
+			if ($('button#add-new-btn').length > 0) {
+				var sisters;
+				var len;
+				var sisterid;
+				var sectionid;
+
+				if ($('div#the-guts textarea.has-sister').length > 0 ) {
+
+					var addnewbtn = $('button#add-new-btn').closest('.row');
+					var html = $(addnewbtn).html()
+					$('button#add-new-btn').remove();
+					sisters = $('div#the-guts textarea.has-sister')
+					len = $(sisters).length	
+					sisterid = $(sisters).attr('data-sisterid');
+					sectionid = $(sisters).attr('data-section');
+
+					var afterele = $(sisters[len-1])
+					afterele = $(afterele).closest('div.row');
+					$(afterele).after(html)	;
+				} else {
+					sectionid = $('#the-guts div.checkbox.is-sister').attr('data-section');
+					sisterid =  $('#the-guts div.checkbox.is-sister').attr('data-fieldid');
+
+				}
+				$('button#add-new-btn').attr('data-sisterid', sisterid);
+				$('button#add-new-btn').attr('data-section', sectionid);
+			}
+		}
 	}
 }
 
@@ -131,6 +174,7 @@ $('#the-guts.meta div.checkbox').each(function (index, val) {
 	if (checked == 'checked') {
 		$(this).addClass('checked');
 	}
+
 	admin.meta[$(this).attr('id')] = {'name': $(this).attr('data-labelname'), 
 									'value': $(this).attr('data-value'),
 									'eleid': $(this).attr('id'),
@@ -157,6 +201,19 @@ $('#the-guts.meta input.data').each(function (index, val) {
 })
 
 $('#the-guts.meta textarea.data').each(function (index, val) {
+	if ($(this).hasClass('has-sister')==true) {
+		var sisterid = $(this).attr('data-sisterid');
+		var id = $(this).attr('id');
+		var classlist = $(this).attr('classList');
+		$(this).closest('.row').attr('data-sisterid', sisterid);
+		$(this).closest('.row').addClass('has-sister');	
+
+		admin.meta['sister'] = {};
+		admin.meta.sister[sisterid] = {sisterid: sisterid, 
+								'id': id,
+								'class': classlist};	
+	}
+
 	admin.meta[$(this).attr('id')] = {'name': $(this).attr('data-labelname'), 
 									'value': $(this).val(),
 									'eleid': $(this).attr('id'),
@@ -177,6 +234,7 @@ $('#the-guts div.checkbox').click(function () {
 	$('#save').prop("disabled", false); 
 
 })
+
 
 $('#the-guts input.data').click(function (index, val) {
 	$('#save').prop("disabled", false); 
@@ -220,6 +278,68 @@ $('#the-guts .resume-item').click(function () {
 	}
 })
 
+$('#the-guts .modal button#add-item').click(function () {
+	/****************************************************************
+		This click event for the add item (save) button from the modal
+		Input : gets it stuff from data attr of the add-new-btn button
+		output : does a ajax call to insert rec and than outputs the 
+		return rec back onto the form
+	*****************************************************************/
+	var textareas = $('#the-guts .modal textarea');
+	var itemcount = $('#the-guts textarea.has-sister').length+1
+	var data = {};
+	var sisterid = $('#add-new-btn').attr('data-sisterid');
+	var sectionid = $('#add-new-btn').attr('data-section');
+
+	if (sisterid != undefined && sectionid != undefined) {
+		$.each(textareas, function (index, val) {
+			item = index+1;
+			data.Field_Label = 'Bullet ' + itemcount;
+			data.Field_Value = $(this).val();
+			data.Ele_id = 'show-career-highlights';
+			data.Class_List = 'form-control has-sister';
+			data.Field_Type = 'Textarea';
+			data.Section_Id = sectionid;
+			data.Sister_Field = sisterid;
+		}) 
+	} 
+
+	if (admin.sizeofobj(data) > 0) {
+
+		data = {'data': JSON.stringify(data)};
+
+		$.ajax({
+			'url': admin.core.baseurl + '/index.php/Meta/insert_meta',
+			'data' : data,
+			'type': 'POST',
+			success: function (data) {
+				$.each(data, function () {
+					html = '<div class = "row ele">';
+					html += '<div class = "col-lg-2 lable" data-labelid = "' + this.Section_Details_Id + '">'+ this.Field_Label + '</div>';
+					html += '<div class = "col-lg-5 field">';
+					html += '<textarea id = "' + this.Ele_Id + '" class = "data ' + this.Class_List +'" data-fieldid = "' + this.Section_Details_Id +'" data-labelname = "' + this.Field_Label + '"> '+ this.Field_Value + '</textarea>';
+					html += '</div></div>';
+					var len = $('#the-guts textarea.has-sister').length
+					if (len >0) {
+						var rowele = $('#the-guts textarea.has-sister')[len-1].closest('div.row');
+					} else {
+						var rowele = $('#the-guts div.checkbox.checked#'+this.Ele_Id).closest('div.row');
+					}
+					$(rowele).after(html)
+				})
+
+				$('#the-guts .modal textarea').each(function () {
+					$(this).val('')
+				})
+				$('#the-guts .modal').modal('hide')
+			},
+			error : function () {
+
+			}
+		})
+	}
+})
+
 
 $('#the-guts button#save').click(function () {
 	var obj = $(this).attr('data-obj');
@@ -239,5 +359,6 @@ $('#the-guts button#save').click(function () {
 })
 
 admin.check_for_images();
+admin.check_for_sisters();
 
 })(jQuery);
