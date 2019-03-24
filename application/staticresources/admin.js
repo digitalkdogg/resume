@@ -301,6 +301,7 @@ $('#the-guts .modal button#add-item').click(function () {
 			data.Field_Type = 'Textarea';
 			data.Section_Id = sectionid;
 			data.Sister_Field = sisterid;
+			data.Frontend_Type = 'li';
 		}) 
 	} 
 

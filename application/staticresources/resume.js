@@ -188,7 +188,7 @@ var resume = {};
     					$.each(data.html, function () {
     						$('#body-header').html('About');
     						
-    						$('<div />', {
+    						$('<'+this.Frontend_Type+' />', {
     							'html': this.Field_Value
     						}).appendTo('#body-content #'+this.Ele_Id);
 
