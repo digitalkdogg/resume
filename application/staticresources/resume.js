@@ -22,6 +22,56 @@ var resume = {};
 				resume.menu = menu;
 			}
 
+			if (resume.data.social == undefined) {
+    			resume.data['social'] = {}
+    		}
+
+    		if (resume.data.contact == undefined) {
+    			resume.data['contact'] = {}
+    		}
+
+    		$('#header-container #social-container .social-wrap').each(function (index, val) {
+    			/******************************************************
+					Purpose : loop through aoll the social media icons
+					and store them in resume.data.social
+    			********************************************************/
+    			var ele = $(this).attr('data-label');
+    			var url = $(this).find('a.'+ele).attr('href');
+    			
+    			if (ele != undefined) {
+    				resume.data.social[ele] = {
+    					'name' : ele,
+    					'url' : url
+    				}
+    			}
+    		})			
+
+    		var contacts = $('#header-container #contact-container div').children();
+    		$.each(contacts, function () {
+    			/******************************************************
+					Purpose : loop through aoll the contact elemets
+					and store them in resume.data.contact
+    			********************************************************/
+    			var ele = $(this).attr('data-ele')
+    			resume.data.contact[ele] = {
+    				'name': ele,
+    				'val' : $(this).html(),
+    				'type': $(this).attr('data-type')
+    			}
+    		})
+
+    		$('#photo-container img').each(function () {
+    		/********************************************************************
+				purpose : get the contact photo and store it in resume.data.contact
+    		********************************************************************/
+    			var src = $(this).attr('src');
+    			resume.data.contact['photo'] = {
+    				'src': src,
+    				'filename': $(this).attr('data-filename')
+    			}
+    		})
+
+
 			if ($('#body-container').hasClass('about')==true) {
 				this.getabout();
 			} else if ($('#body-container').hasClass('education')==true) {
@@ -185,6 +235,8 @@ var resume = {};
     					$('<div />', {
     						'id': 'objective'
     					}).appendTo('#body-content')
+    					resume.data['about'] = data.html;
+
     					$.each(data.html, function () {
     						$('#body-header').html('About');
     						
