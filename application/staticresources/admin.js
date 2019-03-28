@@ -35,6 +35,49 @@ admin = {'meta': {},
   			});
 		}, initdelay);
 	},
+	add_rec_obj: function (rec, obj, thekey) {
+		var eleid = rec.Ele_Id;
+		var id = rec.Section_Details_Id;
+		var fieldlabel = rec.Field_Label;
+		var name = rec.Field_Label;
+		var metaid = rec.Section_Details_Id;
+		var value = rec.Field_Value;
+		var frontendtype = rec.Frontend_Type;
+		var sisterfield = rec.Sister_Field;
+		var section = rec.Section_Id;
+
+
+		if (eleid != undefined && metaid != undefined) {
+
+			var objid = eleid + '_' + metaid;
+			if (thekey == undefined) {
+				thekey = objid;
+			}
+			obj[thekey] = {}
+			if (name != undefined) {
+				obj[thekey]['name'] = name;
+			}
+			if (eleid != undefined) {
+				obj[thekey]['eleid'] = eleid;
+			}
+			if (metaid != undefined) {
+				obj[thekey]['metaid'] = metaid;
+			}
+			if (value != undefined) {
+				obj[thekey]['value'] = value;
+			}
+			if (frontendtype != undefined) {
+				obj[thekey]['frontendtype'] = frontendtype;
+			}
+			if (sisterfield != undefined) {
+				obj[thekey]['sisterfield'] = sisterfield;
+			}
+			if (section != undefined) {
+				obj[thekey]['section'] = section;
+			}
+
+		}
+	},
 	save_meta: function ($this) {
 		var obj = $($this).attr('data-obj');
 		var table = $($this).attr('data-table');
@@ -174,11 +217,15 @@ $('#the-guts.meta div.checkbox').each(function (index, val) {
 	if (checked == 'checked') {
 		$(this).addClass('checked');
 	}
+	var rec = {
+		'Field_Label': $(this).attr('data-labelname'), 
+		'Field_Value': $(this).attr('data-value'),
+		'Ele_Id': $(this).attr('id'),
+		'Section_Details_Id': $(this).attr('data-fieldid'),
+		'Section_Details_Id': $(this).attr('data-fieldid')
+	}
 
-	admin.meta[$(this).attr('id')] = {'name': $(this).attr('data-labelname'), 
-									'value': $(this).attr('data-value'),
-									'eleid': $(this).attr('id'),
-									'metaid': $(this).attr('data-fieldid')} 
+	admin.add_rec_obj(rec, admin.meta, $(this).attr('id'));
 
 })
 
@@ -205,6 +252,7 @@ $('#the-guts.meta textarea.data').each(function (index, val) {
 		var sisterid = $(this).attr('data-sisterid');
 		var id = $(this).attr('id');
 		var classlist = $(this).attr('classList');
+		var fieldid = $(this).attr('data-fieldid');
 		$(this).closest('.row').attr('data-sisterid', sisterid);
 		$(this).closest('.row').addClass('has-sister');	
 
@@ -213,8 +261,13 @@ $('#the-guts.meta textarea.data').each(function (index, val) {
 								'id': id,
 								'class': classlist};	
 	}
-
-	admin.meta[$(this).attr('id')] = {'name': $(this).attr('data-labelname'), 
+    
+    if (sisterid != 'na' && sisterid != undefined) {
+    	id = id + '_'+fieldid
+    } else {
+    	id = $(this).attr('id')
+    }
+	admin.meta[id] = {'name': $(this).attr('data-labelname'), 
 									'value': $(this).val(),
 									'eleid': $(this).attr('id'),
 									'metaid': $(this).attr('data-fieldid')} 
@@ -327,6 +380,11 @@ $('#the-guts .modal button#add-item').click(function () {
 						var rowele = $('#the-guts div.checkbox.checked#'+this.Ele_Id).closest('div.row');
 					}
 					$(rowele).after(html)
+
+					if (this.Section_Details_Id != undefined) {
+						admin.add_rec_obj(this, admin.meta);
+					}
+
 				})
 
 				$('#the-guts .modal textarea').each(function () {
