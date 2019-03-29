@@ -2,11 +2,16 @@
 
 admin = {'meta': {},  
 	'core': core,
+	'fieldmap': {
+		'Field_Label': 'data-labelname',
+		'Field_Value': 'data-value',
+		'Ele_Id' : 'id',
+		'Section_Details_Id' : 'data-fieldid'
+	},
 	getchangedinput: function (obj) {
 
 		var returnobj={}
 		$.each(obj, function () {
-			console.log(this);
 			if (this.changed == true) {
 				returnobj[this.name] = {'metaid': this.metaid, 'FieldValue': this.value}
 			}
@@ -46,7 +51,6 @@ admin = {'meta': {},
 		var sisterfield = rec.Sister_Field;
 		var section = rec.Section_Id;
 
-
 		if (eleid != undefined && metaid != undefined) {
 
 			var objid = eleid + '_' + metaid;
@@ -54,6 +58,7 @@ admin = {'meta': {},
 				thekey = objid;
 			}
 			obj[thekey] = {}
+
 			if (name != undefined) {
 				obj[thekey]['name'] = name;
 			}
@@ -213,34 +218,49 @@ admin = {'meta': {},
 }
 
 $('#the-guts.meta div.checkbox').each(function (index, val) {
+	var $this = $(this)
 	var checked = $(this).attr('data-value');
 	if (checked == 'checked') {
-		$(this).addClass('checked');
-	}
-	var rec = {
-		'Field_Label': $(this).attr('data-labelname'), 
-		'Field_Value': $(this).attr('data-value'),
-		'Ele_Id': $(this).attr('id'),
-		'Section_Details_Id': $(this).attr('data-fieldid'),
-		'Section_Details_Id': $(this).attr('data-fieldid')
+		$($this).addClass('checked');
 	}
 
-	admin.add_rec_obj(rec, admin.meta, $(this).attr('id'));
+	 var rec = {}
+	 $.each(admin.fieldmap, function (index, fieldval) {
+	 	rec[index]= $($this).attr(fieldval)
+	 })		
+
+	admin.add_rec_obj(rec, admin.meta, $($this).attr('id'));
 
 })
 
 
 $('#the-guts.meta select.data').each(function (index, val) {
+	var $this = $(this);
 	if ($(this).attr('data-value') != '') {
 		$(this).val($(this).attr('data-value'));
 	}
-	admin.meta[$(this).attr('id')] = {'name': $(this).attr('data-labelname'), 
-									'value': $(this).attr('data-value'),
-									'eleid': $(this).attr('id'),
-									'metaid': $(this).attr('data-fieldid')} 
+
+	 var rec = {}
+	 $.each(admin.fieldmap, function (index, fieldval) {
+	 	rec[index]= $($this).attr(fieldval)
+	 })		
+
+	admin.add_rec_obj(rec, admin.meta, $($this).attr('id'));
 })
 
 $('#the-guts.meta input.data').each(function (index, val) {
+	/****************************************************************
+		Todo : get rid of the other admin.meta function.  doing 
+		something wierd with an ajax call and the profile pic
+	****************************************************************/
+	var $this = $(this);
+ 	var rec = {}
+	 $.each(admin.fieldmap, function (index, fieldval) {
+	 	rec[index]= $($this).attr(fieldval)
+	 })		
+
+	admin.add_rec_obj(rec, admin.meta, $($this).attr('id'));
+
 	admin.meta[$(this).attr('id')] = {'name': $(this).attr('data-labelname'), 
 									'value': $(this).val(),
 									'eleid': $(this).attr('id'),
@@ -248,6 +268,7 @@ $('#the-guts.meta input.data').each(function (index, val) {
 })
 
 $('#the-guts.meta textarea.data').each(function (index, val) {
+	var $this = $(this);
 	if ($(this).hasClass('has-sister')==true) {
 		var sisterid = $(this).attr('data-sisterid');
 		var id = $(this).attr('id');
@@ -267,10 +288,18 @@ $('#the-guts.meta textarea.data').each(function (index, val) {
     } else {
     	id = $(this).attr('id')
     }
-	admin.meta[id] = {'name': $(this).attr('data-labelname'), 
-									'value': $(this).val(),
-									'eleid': $(this).attr('id'),
-									'metaid': $(this).attr('data-fieldid')} 
+
+    var rec = {}
+	$.each(admin.fieldmap, function (index, fieldval) {
+	 	rec[index]= $($this).attr(fieldval)
+	 	if (index == 'Field_Value' ) {
+	 		if ($($this).attr(fieldval)==undefined) {
+	 			rec[index]= $($this).val();
+	 		}
+	 	}
+	})		
+
+	admin.add_rec_obj(rec, admin.meta, id);
 })
 
 $('#the-guts div.checkbox').click(function () {
