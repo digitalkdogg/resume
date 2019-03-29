@@ -6,7 +6,10 @@ admin = {'meta': {},
 		'Field_Label': 'data-labelname',
 		'Field_Value': 'data-value',
 		'Ele_Id' : 'id',
-		'Section_Details_Id' : 'data-fieldid'
+		'Section_Details_Id' : 'data-fieldid',
+		'Sister_Field': 'data-sisterid',
+		'Section_Id': 'data-section',
+		'Frontend_Type' : 'data-frontendtype'
 	},
 	getchangedinput: function (obj) {
 
