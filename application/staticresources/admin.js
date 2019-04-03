@@ -1,5 +1,4 @@
 (function($){
-
 admin = {'meta': {},  
 	'core': core,
 	'fieldmap': {
@@ -9,7 +8,32 @@ admin = {'meta': {},
 		'Section_Details_Id' : 'data-fieldid',
 		'Sister_Field': 'data-sisterid',
 		'Section_Id': 'data-section',
-		'Frontend_Type' : 'data-frontendtype'
+		'Frontend_Type' : 'data-frontendtype',
+		'Order_Num': 'data-order'
+	},
+	load_date_pickers: function () {
+		setTimeout(function () {
+			var dateoptions = {
+    			dateFormat: "m-d-Y",
+			}
+			$('input.datepicker').each(function () {
+				var fieldid = $(this).attr('data-fieldid')
+				var $this = $(this);
+				var sisterid = $(this).attr('data-sisterid');
+				var cal = $($this).flatpickr(dateoptions);
+				$($this).wrap('<div id = "' + fieldid +'" data-sisterid = "' + sisterid + '">');
+				$($this).attr('readonly', false)
+				$('<span>', {
+					'class':'flatpickr fa fa-calendar calendar',
+					'id' : 'span_' + fieldid,
+				}).insertAfter($($this))
+
+				$('span#span_'+fieldid).on('click', function () {
+					cal.open();
+				})
+			})
+		}, 500)
+	
 	},
 	getchangedinput: function (obj) {
 
@@ -43,6 +67,16 @@ admin = {'meta': {},
   			});
 		}, initdelay);
 	},
+	set_parent_row: function ($this) {
+		var sisterid = $($this).attr('data-sisterid');
+		var fieldid = $($this).attr('data-fieldid');
+		var order = $($this).attr('data-order');
+ 		$($this).addClass('has-sister');
+ 		$($this).closest('.row').attr('data-sisterid', sisterid);
+		$($this).closest('.row').addClass('has-sister');	
+		$($this).closest('.row').attr('data-id', fieldid);
+		$($this).closest('.row').attr('data-order', order);
+	},
 	add_rec_obj: function (rec, obj, thekey) {
 		var eleid = rec.Ele_Id;
 		var id = rec.Section_Details_Id;
@@ -53,6 +87,7 @@ admin = {'meta': {},
 		var frontendtype = rec.Frontend_Type;
 		var sisterfield = rec.Sister_Field;
 		var section = rec.Section_Id;
+		var order = rec.Order_Num;
 
 		if (eleid != undefined && metaid != undefined) {
 
@@ -82,6 +117,9 @@ admin = {'meta': {},
 			}
 			if (section != undefined) {
 				obj[thekey]['section'] = section;
+			}
+			if (order != undefined) {
+				obj[thekey]['order'] = order;
 			}
 
 		}
@@ -188,37 +226,69 @@ admin = {'meta': {},
 		})
 	},
 	check_for_sisters: function () {
+		/************************************************************************
+		This function first makes sure that there are sisters. If there
+		are than it loops through the sisterwrappers to find all the has-sisters.
+		Inside of that loops it loops through all the issisters to combine
+		them together.  Finally it moves the add button to the button of said 
+		wrapper
+		****************************************************************************/
 		if (admin.sizeofobj(admin.meta.sister)>=0) {
-			if ($('button#add-new-btn').length > 0) {
-				var sisters;
-				var len;
-				var sisterid;
-				var sectionid;
+			var len;
+			var sisterid;
+			var sectionid;
 
-				if ($('div#the-guts textarea.has-sister').length > 0 ) {
+			if ($('div#the-guts div.has-sister').length > 0 ) {
+				var sisterwrappers = $('div#sister-wrapper');
+				var sisters = $('div.has-sister');
+				var sisterobj = {}
+				$.each(sisterwrappers, function () {
+					var $this = $(this);
+					sisterid = $(this).attr('data-fieldid');
+					sisterobj[sisterid] = {}
+					$.each(sisters, function () {
+						if (sisterid == $(this).attr('data-sisterid')) {
+							sisterobj[sisterid][$(this).attr('data-order') + '_' + $(this).attr('data-id')] = $(this)
+							sisterobj[sisterid] = admin.sortObject(sisterobj[sisterid]);
+						}
+					})
 
-					var addnewbtn = $('button#add-new-btn').closest('.row');
-					var html = $(addnewbtn).html()
-					$('button#add-new-btn').remove();
-					sisters = $('div#the-guts textarea.has-sister')
-					len = $(sisters).length	
-					sisterid = $(sisters).attr('data-sisterid');
-					sectionid = $(sisters).attr('data-section');
+					$.each(sisterobj[sisterid], function () {
+						$($this).append($(this))
+					})
+				
+				})
 
-					var afterele = $(sisters[len-1])
-					afterele = $(afterele).closest('div.row');
-					$(afterele).after(html)	;
-				} else {
-					sectionid = $('#the-guts div.checkbox.is-sister').attr('data-section');
-					sisterid =  $('#the-guts div.checkbox.is-sister').attr('data-fieldid');
+				var addnewbtn = $('button#add-new-btn').closest('.row');
+				var html = $(addnewbtn).html()
+				$('button#add-new-btn').remove();
+				sisters = $('div#the-guts textarea.has-sister')
+				len = $(sisters).length	
+				sisterid = $(sisters).attr('data-sisterid');
+				sectionid = $(sisters).attr('data-section');
 
-				}
-				$('button#add-new-btn').attr('data-sisterid', sisterid);
-				$('button#add-new-btn').attr('data-section', sectionid);
+				var afterele = $(sisters[len-1])
+				afterele = $(afterele).closest('div.row');
+				$(afterele).after(html)	;
+			} else {
+				sectionid = $('#the-guts div.checkbox.is-sister').attr('data-section');
+				sisterid =  $('#the-guts div.checkbox.is-sister').attr('data-fieldid');
+
 			}
+			$('button#add-new-btn').attr('data-sisterid', sisterid);
+			$('button#add-new-btn').attr('data-section', sectionid);
 		}
+	}, 
+	sortObject : function (obj) {
+    	return Object.keys(obj).sort().reduce(function (result, key) {
+        	result[key] = obj[key];
+        	return result;
+    	}, {});
 	}
 }
+
+
+admin.load_date_pickers();
 
 $('#the-guts.meta div.checkbox').each(function (index, val) {
 	var $this = $(this)
@@ -258,6 +328,11 @@ $('#the-guts.meta input.data').each(function (index, val) {
 	****************************************************************/
 	var $this = $(this);
  	var rec = {}
+
+ 	if ($(this).attr('data-sisterid') != undefined) {
+ 		admin.set_parent_row($(this));
+ 	}
+
 	 $.each(admin.fieldmap, function (index, fieldval) {
 	 	rec[index]= $($this).attr(fieldval)
 	 })		
@@ -277,8 +352,8 @@ $('#the-guts.meta textarea.data').each(function (index, val) {
 		var id = $(this).attr('id');
 		var classlist = $(this).attr('classList');
 		var fieldid = $(this).attr('data-fieldid');
-		$(this).closest('.row').attr('data-sisterid', sisterid);
-		$(this).closest('.row').addClass('has-sister');	
+
+		admin.set_parent_row($(this));
 
 		admin.meta['sister'] = {};
 		admin.meta.sister[sisterid] = {sisterid: sisterid, 
