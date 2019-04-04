@@ -14,6 +14,9 @@ class Resume extends CI_Controller {
         $resumeid = $this->uri->segment(4, 0);
         $page = $this->uri->segment(5, 'About');
 
+        $this->load->model('Site_meta');
+        $menu = $this->Site_meta->get_res_menu();
+
         if(is_null($resumeid) != true) {
             $this->load->model('user');
             $query=$this->user->get(array('username'=>$username, 'resumeid'=>$resumeid));
@@ -26,7 +29,7 @@ class Resume extends CI_Controller {
         $this->load->view('body_container', array('resumeid' => $resumeid));
 
         $this->load->view('body_header', $header);
-        $this->load->view('nav_menu');
+        $this->load->view('nav_menu', array('menu'=>$menu, 'username'=> $username, 'resume'=>$resumeid));
         $this->load->view('row_spacer');
         $this->load->view('body', array('type'=>$page));
         $this->load->view('modal');

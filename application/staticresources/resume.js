@@ -73,8 +73,10 @@ var resume = {};
 
     		var bodyholder = $('#body-container')
 			if ($(bodyholder).hasClass('about')==true || $(bodyholder).hasClass('About')==true) {
+				$('li#about').addClass('active');
 				this.getGuts('about', 'About');
 			} else if ($(bodyholder).hasClass('education')==true || $(bodyholder).hasClass('Education')==true) {
+				$('li#education').addClass('active');
 				this.getGuts('Education', 'Education');
 			} else if ($(bodyholder).hasClass('experience')==true || $(bodyholder).hasClass('Experience')==true) {
 	
@@ -246,7 +248,6 @@ var resume = {};
 			todo : bring up 404 if check_menu_disabled returns true
 			*******************************************************/
 			if (this.check_menu_disabled('about')==false) {
-				this.getGuts('about', 'About');
 				$('#body-content').empty();
 				$('<div />', {
 					'id': 'objective'
@@ -254,15 +255,30 @@ var resume = {};
 				resume.data['about'] = data.html;
 
 				$.each(data.html, function () {	
-					$('<'+this.Frontend_Type+' />', {
-						'html': this.Field_Value
-					}).appendTo('#body-content #'+this.Ele_Id);
-
-					if (this.Field_Type.indexOf('Checkbox')>=0) {
-						$('<div />', {
-							'id': this.Ele_Id
-						}).appendTo('#body-content');
+					if (this.Sister_Field != 'is-sister') {
+						if (this.Ele_Id == 'objective') {
+							$('<'+this.Frontend_Type + ' />', {
+								'text':this.Field_Value
+							}).prependTo('#body-content #objective')
+						}
+						if (this.Ele_Id == 'show-career-highlights') {
+							console.log($('#body-content .about-wrapper').length)
+							$('<'+this.Frontend_Type + ' />', {
+								text: this.Field_Value
+							}).appendTo('#body-content #objective')
+						}
 					}
+
+				
+				//	$('<'+this.Frontend_Type+' />', {
+				//		'html': this.Field_Value
+				//	}).appendTo('#body-content #'+this.Ele_Id);
+
+				//	if (this.Field_Type.indexOf('Checkbox')>=0) {
+				//		$('<div />', {
+				//			'id': this.Ele_Id
+				//		}).appendTo('#body-content');
+				//	}
 				})
 			}
 		},

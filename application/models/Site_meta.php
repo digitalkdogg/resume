@@ -10,5 +10,11 @@
         $query = $this->db->get('SiteMeta');
         return $query->result();
     }
+     public function get_res_menu() {
+    	 $this->db->where('Name', 'ResMenu');
+    	 $this->db->order_by('Order', 'asc');
+        $query = $this->db->get('SiteMeta');
+        return $query->result();
+    }
 }
 ?>
