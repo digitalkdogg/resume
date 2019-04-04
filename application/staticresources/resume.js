@@ -71,14 +71,14 @@ var resume = {};
     			}
     		})
 
-
-			if ($('#body-container').hasClass('about')==true) {
-				this.getAbout();
-			} else if ($('#body-container').hasClass('Education')==true) {
-				this.getEducation();
-			} else if ($('#body-container').hasClass('experience')==true) {
+    		var bodyholder = $('#body-container')
+			if ($(bodyholder).hasClass('about')==true || $(bodyholder).hasClass('About')==true) {
+				this.getGuts('about', 'About');
+			} else if ($(bodyholder).hasClass('education')==true || $(bodyholder).hasClass('Education')==true) {
+				this.getGuts('Education', 'Education');
+			} else if ($(bodyholder).hasClass('experience')==true || $(bodyholder).hasClass('Experience')==true) {
 	
-			} else if ($('#body-container').hasClass('skills')==true) {
+			} else if ($(bodyholder).hasClass('skills')==true || $(bodyholder).hasClass('Skills')) {
 	
 			}
 
@@ -221,119 +221,116 @@ var resume = {};
 				$('#myModal #send').addClass('hidden');
 			});
 		}, 
-		getAbout: function () {
+		getGuts: function (section_type, section_title) {
+			$.ajax({
+				url: resume.data.baseurl + 'index.php/Resume/get_guts',
+				type: 'POST',
+				data: {'resumeid': this.data.resumeid, 'section_type': section_type},
+				success: function(data){ 
+					section_type = section_type.toLowerCase();
+					$('#body-header').html(section_title);
+					if (section_type=='about') {
+						resume.renderAbout(data);
+					}
+					if (section_type=='education') {
+						resume.renderEducation(data);
+					}
+				},
+				error: function(data) {
+    				$('#body-container #about').removeClass('hidden');
+				}
+			});
+		},
+		renderAbout: function (data) {
 			/*******************************************************
 			todo : bring up 404 if check_menu_disabled returns true
 			*******************************************************/
 			if (this.check_menu_disabled('about')==false) {
-				$.ajax({
-    				url: resume.data.baseurl + 'index.php/Resume/About',
-    				type: 'POST',
-    				data: {'resumeid': this.data.resumeid, 'section_type': 'about'},
-    				success: function(data){ 
-    					$('#body-content').empty();
-    					$('<div />', {
-    						'id': 'objective'
-    					}).appendTo('#body-content')
-    					resume.data['about'] = data.html;
+				this.getGuts('about', 'About');
+				$('#body-content').empty();
+				$('<div />', {
+					'id': 'objective'
+				}).appendTo('#body-content')
+				resume.data['about'] = data.html;
 
-    					$.each(data.html, function () {
-    						$('#body-header').html('About');
-    						
-    						$('<'+this.Frontend_Type+' />', {
-    							'html': this.Field_Value
-    						}).appendTo('#body-content #'+this.Ele_Id);
+				$.each(data.html, function () {	
+					$('<'+this.Frontend_Type+' />', {
+						'html': this.Field_Value
+					}).appendTo('#body-content #'+this.Ele_Id);
 
-    						if (this.Field_Type.indexOf('Checkbox')>=0) {
-    							$('<div />', {
-    								'id': this.Ele_Id
-    							}).appendTo('#body-content');
-    						}
-    					})
-    				},
-    				error: function(data) {
-        				$('#body-container #about').removeClass('hidden');
-    				}
-				});
+					if (this.Field_Type.indexOf('Checkbox')>=0) {
+						$('<div />', {
+							'id': this.Ele_Id
+						}).appendTo('#body-content');
+					}
+				})
 			}
 		},
-		getEducation: function () {
+		renderEducation: function (data) {
 			/*******************************************************
 			todo : bring up 404 if check_menu_disabled returns true
 			*******************************************************/
 			if (this.check_menu_disabled('education')==false) {
-				$.ajax({
-    				url: resume.data.baseurl + 'index.php/Resume/About',
-    				type: 'POST',
-    				data: {'resumeid': this.data.resumeid, 'section_type': 'education'},
-    				success: function(data){ 
-    					$('#body-content').empty();
-    					$('<div />', {
-    						'id': 'education'
-    					}).appendTo('#body-content')
-    					resume.data['education'] = data.html;
+				$('#body-content').empty();
+				$('<div />', {
+					'id': 'education'
+				}).appendTo('#body-content')
+				resume.data['education'] = data.html;
 
-    					$.each(data.html, function () {
-    				
-    						$('#body-header').html('Education');
-    					
-    						if (this.Field_Type == 'Wrapper') {
-    							$('<'+this.Frontend_Type+' />', {
-    								'id': 'wrapper_' + this.Section_Details_Id,
-    								'class':'wrapper row'
-    							}).appendTo('#body-content #'+this.Ele_Id);
+				$.each(data.html, function () {
 
-    							$('<div />', {
-    								'class': 'row',
-    								'id': 'row_1_'+this.Section_Details_Id
-    							}).appendTo('#body-content #wrapper_'+this.Section_Details_Id);
+					if (this.Field_Type == 'Wrapper') {
+						$('<'+this.Frontend_Type+' />', {
+							'id': 'wrapper_' + this.Section_Details_Id,
+							'class':'wrapper row'
+						}).appendTo('#body-content #'+this.Ele_Id);
 
-    							$('<div />', {
-    								'class': 'row',
-    								'id': 'row_2_'+this.Section_Details_Id
-    							}).appendTo('#body-content #wrapper_'+this.Section_Details_Id);
+						$('<div />', {
+							'class': 'row',
+							'id': 'row_1_'+this.Section_Details_Id
+						}).appendTo('#body-content #wrapper_'+this.Section_Details_Id);
 
-    						} else {
-    							console.log(this);
-    							var sisterid = this.Sister_Field;
-    							if (this.Class_List.indexOf('schooltitle')>= 0) {
+						$('<div />', {
+							'class': 'row',
+							'id': 'row_2_'+this.Section_Details_Id
+						}).appendTo('#body-content #wrapper_'+this.Section_Details_Id);
 
-    								$('<'+this.Frontend_Type+' />', {
-    									'text':this.Field_Value,
-    									'class': 'col-lg-3 schooltitle'
-    								}).appendTo('#body-content #row_1_' + this.Sister_Field)
-    							}
+					} else {
+						console.log(this);
+						var sisterid = this.Sister_Field;
+						if (this.Class_List.indexOf('schooltitle')>= 0) {
 
-    							if (this.Class_List.indexOf('start-date')>= 0) {
-    								$('<'+this.Frontend_Type+' />', {
-    									'text':this.Field_Value,
-    									'class': 'col-lg-3 startdate',
-    									'id' : 'start-date'
-    								}).appendTo('#body-content #row_1_'+this.Sister_Field)
-    							}
+							$('<'+this.Frontend_Type+' />', {
+								'text':this.Field_Value,
+								'class': 'col-lg-3 schooltitle'
+							}).appendTo('#body-content #row_1_' + this.Sister_Field)
+						}
 
-    							if (this.Class_List.indexOf('end-date')>= 0) {
+						if (this.Class_List.indexOf('start-date')>= 0) {
+							$('<'+this.Frontend_Type+' />', {
+								'text':this.Field_Value,
+								'class': 'col-lg-3 startdate',
+								'id' : 'start-date'
+							}).appendTo('#body-content #row_1_'+this.Sister_Field)
+						}
 
-    								$('<'+this.Frontend_Type+' />', {
-    									'text':this.Field_Value,
-    									'class': 'col-lg-3',
-    									'id': 'end-date'
-    								}).appendTo('#body-content #row_1_'+this.Sister_Field)
-    							}
+						if (this.Class_List.indexOf('end-date')>= 0) {
 
-    							if (this.Class_List.indexOf('subtitle')>= 0) {
-    								$('<'+this.Frontend_Type+' />', {
-    									'html': '<br />' + this.Field_Value,
-    								}).appendTo('#body-content #row_1_' + this.Sister_Field + ' .schooltitle')
-    							}
-    						}
-    					
-    					})
-    				},
-    				error: function(data) {
-        				$('#body-container #about').removeClass('hidden');
-    				}
-				});
+							$('<'+this.Frontend_Type+' />', {
+								'text':this.Field_Value,
+								'class': 'col-lg-3',
+								'id': 'end-date'
+							}).appendTo('#body-content #row_1_'+this.Sister_Field)
+						}
+
+						if (this.Class_List.indexOf('subtitle')>= 0) {
+							$('<'+this.Frontend_Type+' />', {
+								'html': '<br />' + this.Field_Value,
+							}).appendTo('#body-content #row_1_' + this.Sister_Field + ' .schooltitle')
+						}
+					}
+				
+				})
 			}
 		},
 		isMobile: function () {

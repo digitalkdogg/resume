@@ -52,6 +52,20 @@ class Resume extends CI_Controller {
         $this->load->view('footer');
     }
 
+    public function get_guts() {
+        $resumeid = $this->input->post('resumeid');
+        $section = $this->input->post('section_type');
+        try {
+            $this->load->model('about');
+            $html = $this->about->get_by_resume($resumeid, $section);
+             return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(array('html'=> $html)));
+        } catch(exception $e) {
+            echo 'error';
+        }
+    }
+
     public function About() {
         $resumeid = $this->input->post('resumeid');
         $section = $this->input->post('section_type');
