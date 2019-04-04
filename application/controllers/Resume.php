@@ -12,11 +12,7 @@ class Resume extends CI_Controller {
     public function view() {
         $username = $this->uri->segment(3, 0);
         $resumeid = $this->uri->segment(4, 0);
-        $page = $this->uri->segment(5, 0);
-
-        if ($page == 0) {
-            $page = 'about';
-        }
+        $page = $this->uri->segment(5, 'About');
 
         if(is_null($resumeid) != true) {
             $this->load->model('user');

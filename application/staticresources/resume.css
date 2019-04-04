@@ -429,3 +429,8 @@ div.skill-proj-dets {
     margin-bottom: 5px;
     padding: 5px;
 }
+
+#body-content .wrapper {
+    border-bottom: 1px dotted #000;
+    padding: 10px;
+}
