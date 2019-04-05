@@ -225,3 +225,7 @@ span.flatpickr.fa.fa-calendar.calendar:hover {
     opacity: .7;
     cursor: pointer;
 }    
+
+button.pell-button {
+    width: 35px;
+}

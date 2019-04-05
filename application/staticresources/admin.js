@@ -38,6 +38,7 @@ admin = {'meta': {},
 	getchangedinput: function (obj) {
 
 		var returnobj={}
+
 		$.each(obj, function () {
 			if (this.changed == true) {
 				returnobj[this.name] = {'metaid': this.metaid, 'FieldValue': this.value}
@@ -129,12 +130,13 @@ admin = {'meta': {},
 		var table = $($this).attr('data-table');
 
 		var data = admin.getchangedinput(admin[obj]);
+
 		if (Object.keys(data).length > 0 ) {
 			data = {'data': JSON.stringify(data)};
 			$($this).find('.fa-spin').removeClass('hidden');
 			$($this).find('span.txt').addClass('hidden');
 			$.ajax({
-				'url': admin.core.baseurl + '/index.php/'+table,
+				'url': admin.core.baseurl + 'index.php/'+table,
 				'type': 'POST',
 				'data': data,
 				'complete': function (data) {
@@ -284,6 +286,14 @@ admin = {'meta': {},
         	result[key] = obj[key];
         	return result;
     	}, {});
+	},
+	changeWysiwyg: function (html, thiseditor) {
+		var thisone = admin.meta['pre-'+thiseditor]
+		if (thisone.value.trim() != html.trim()) {
+			thisone['changed'] = true;
+			thisone.value = html.trim();
+			admin.meta['pre-'+thiseditor] = thisone 
+		}
 	}
 }
 
@@ -345,6 +355,22 @@ $('#the-guts.meta input.data').each(function (index, val) {
 									'metaid': $(this).attr('data-fieldid')} 
 })
 
+$('#the-guts.meta pre.data.html-output').each(function () {
+	var $this = $(this);
+	var rec = {}
+
+	if ($(this).attr('data-sisterid') != undefined) {
+ 		admin.set_parent_row($(this));
+ 	}
+
+ 	 $.each(admin.fieldmap, function (index, fieldval) {
+	 	rec[index]= $($this).attr(fieldval)
+	 })	
+
+	admin.add_rec_obj(rec, admin.meta, 'pre-' + $($this).attr('data-fieldid'));
+
+})
+
 $('#the-guts.meta textarea.data').each(function (index, val) {
 	var $this = $(this);
 	if ($(this).hasClass('has-sister')==true) {
@@ -380,6 +406,7 @@ $('#the-guts.meta textarea.data').each(function (index, val) {
 	admin.add_rec_obj(rec, admin.meta, id);
 })
 
+
 $('#the-guts div.checkbox').click(function () {
 	var lookupid = $(this).attr('id');
 	if ($(this).hasClass('checked')== true) {
@@ -400,7 +427,9 @@ $('#the-guts input.data').click(function (index, val) {
 	$('#save').prop("disabled", false); 
 })
 
+
 $('#the-guts .data').change(function (index, val){
+
 	var lookupid = $(this).attr('id');
 	var oldval = admin.meta[lookupid].value;
 	var newval = $(this).val();
@@ -526,5 +555,39 @@ $('#the-guts button#save').click(function () {
 
 admin.check_for_images();
 admin.check_for_sisters();
+
+if ($('#editor.pell').length > 0) {
+	/**************************************************** 
+	this functions load the wysiwyg editors with 
+	their correct html.  Also hides the code button
+	 *******************************************************/
+	var editor = window.pell.init({
+					element: document.getElementById('editor'),
+					defaultParagraphSeparator: 'p',
+					onChange: function (html) {
+						document.getElementsByClassName('html-output').textContent = html;
+
+						admin.changeWysiwyg(html, $(editor).attr('data-fieldid'));
+					}
+				})
+
+
+	$('#editor.pell').each(function() {
+		var fieldid = $(this).closest('.row').attr('data-fieldid');
+		$('.data.html-output').each(function () {
+			if (fieldid == $(this).data('fieldid')) {
+				admin.meta['pre-' + fieldid]['value']= $(this).html().trim();
+				editor.content.innerHTML = admin.meta['pre-' + fieldid]['value'];
+
+				$('.pell-button').each(function () {
+					var title = $(this).attr('title');
+					if (title == 'Code' || title == 'Paragraph') {
+						$(this).addClass('hidden');
+					}
+				})
+			}
+		})
+	})	//end each pell editor	
+}
 
 })(jQuery);

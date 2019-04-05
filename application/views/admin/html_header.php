@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>application/staticresources/animate.css" />
     <script src="<?php echo base_url(); ?>application/staticresources/jquery-3-2-1.js"></script>
 
+     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>/application/staticresources/pelleditor/pell.min.css">
+    <script src="<?php echo base_url(); ?>/application/staticresources/pelleditor/pell.min.js"></script>    
+
     <script>
     var core = {}
     core['baseurl'] = '<?php echo base_url(); ?>';

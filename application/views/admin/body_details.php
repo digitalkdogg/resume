@@ -21,6 +21,9 @@
 							if (strpos($data->Field_Type, 'Checkbox') !== false) {
 								$this->view('templates/admin/meta_field_checkbox', array('data'=>$data));
 							}
+							if (strpos($data->Field_Type, 'wysiwyg') !== false) {
+								$this->view('templates/admin/meta_field_wysiwyg', array('data'=>$data));
+							}
 						} else {
 							$this->view('templates/admin/meta_sister', array('data'=>$data));
 						}
