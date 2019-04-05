@@ -79,7 +79,8 @@ var resume = {};
 				$('li#education').addClass('active');
 				this.getGuts('Education', 'Education');
 			} else if ($(bodyholder).hasClass('experience')==true || $(bodyholder).hasClass('Experience')==true) {
-	
+				$('li#experience').addClass('active');
+				this.getGuts('Experience', 'Experience');
 			} else if ($(bodyholder).hasClass('skills')==true || $(bodyholder).hasClass('Skills')) {
 	
 			}
@@ -237,6 +238,9 @@ var resume = {};
 					if (section_type=='education') {
 						resume.renderEducation(data);
 					}
+					if (section_type=='experience') {
+						resume.renderExperience(data);
+					}
 				},
 				error: function(data) {
     				$('#body-container #about').removeClass('hidden');
@@ -301,7 +305,6 @@ var resume = {};
 						}).appendTo('#body-content #wrapper_'+this.Section_Details_Id);
 
 					} else {
-						console.log(this);
 						var sisterid = this.Sister_Field;
 						if (this.Class_List.indexOf('schooltitle')>= 0) {
 
@@ -335,6 +338,105 @@ var resume = {};
 						}
 					}
 				
+				})
+			}
+		},
+		renderExperience: function (data) {
+			/*******************************************************
+			todo : bring up 404 if check_menu_disabled returns true
+			*******************************************************/
+			if (this.check_menu_disabled('experience')==false) {
+				$('#body-content').empty();
+				$('<div />', {
+					'id': 'experience'
+				}).appendTo('#body-content')
+				resume.data['experience'] = data.html;
+
+				$.each(data.html, function () {	
+
+					if (this.Sister_Field == 'is-sister') {
+						$('<div />', {
+							'class': 'wrapper',
+							'id': 'wrapper_'+this.Section_Details_Id
+						}).appendTo('#body-content #experience')
+
+						$('<div />', {
+							'class': 'row',
+							'id': 'row_'+this.Section_Details_Id
+						}).appendTo('#body-content #wrapper_'+this.Section_Details_Id);
+
+						$('<div />', {
+							'class': 'col-lg-4 col-1'
+						}).appendTo('#body-content #row_'+this.Section_Details_Id)
+
+						$('<div />', {
+							'class': 'col-lg-4 col-2'
+						}).appendTo('#body-content #row_'+this.Section_Details_Id)
+
+						$('<div />', {
+							'class': 'col-lg-4 col-3'
+						}).appendTo('#body-content #row_'+this.Section_Details_Id)
+
+					} else {
+						var sisterid = this.Sister_Field;
+						if (this.Class_List.indexOf('company')>=0) {
+							$('<div />',{
+								text: this.Field_Value,
+								class: 'company bold'
+							}).prependTo('#body-content #row_' + sisterid + ' .col-1');
+						}
+
+						if (this.Class_List.indexOf('job-title')>=0) {
+							$('<div />',{
+								text: this.Field_Value,
+								class: 'jobtitle'
+							}).appendTo('#body-content #row_' + sisterid + ' .col-1' );
+						}
+
+						if (this.Class_List.indexOf('startdate')>=0) {
+							$('<div />',{
+								text: this.Field_Value,
+								class: 'employeement-date'
+							}).appendTo('#body-content #row_' + sisterid + ' .col-3' );
+						}
+
+						if (this.Class_List.indexOf('enddate')>=0) {
+							$('<span />',{
+								text: ' - ' + this.Field_Value,
+								class: 'end-date'
+							}).appendTo('#body-content #row_' + sisterid + ' .employeement-date' );
+						}
+
+						if (this.Class_List.indexOf('city')>=0) {
+							$('<span />',{
+								text: this.Field_Value,
+								class: 'city'
+							}).appendTo('#body-content #row_' + sisterid + ' .col-2' );
+						}
+
+						if (this.Class_List.indexOf('state')>=0) {
+							$('<span />',{
+								text: ', ' + this.Field_Value,
+								class: 'state'
+							}).appendTo('#body-content #row_' + sisterid + ' .city' );
+						}
+
+						if (this.Class_List.indexOf('tagline')>=0) {
+							$('<div />',{
+								html: this.Field_Value,
+								class: 'tagline bold margin-left-5 row'
+							}).appendTo('#body-content #wrapper_' + sisterid );
+						}
+
+						if (this.Class_List.indexOf('highlights')>=0) {
+							$('<div />',{
+								html: this.Field_Value,
+								class: 'highlights row margin-left-5'
+							}).appendTo('#body-content #wrapper_' + sisterid );
+						}
+
+
+					}
 				})
 			}
 		},

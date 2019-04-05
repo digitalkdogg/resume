@@ -18,6 +18,10 @@ a {
     display:none;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .margin-5 {
     margin:5px;
 }
