@@ -11,7 +11,7 @@
 	</div>
 
 	<div class = "row">
-		<div class = "col-lg-offset-5 col-lg-2">
+		<div class = "col-lg-offset-5 col-lg-3">
 			<button class = "btn btn-primary" id = "submit">
 				<i class="fa fa-spinner fa-spin hidden"></i>
 				<span class = "txt">Login</span>

@@ -1,22 +1,8 @@
-<button class = "btn btn-primary" data-toggle="modal" data-target="<?php echo '#'.$data->Field_Label; ?>">Add New</button>
-
-<!-- Modal -->
-<div id="add-new-experience" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
-      </div>
-      <div class="modal-body">
-        <p>Some text in the modal.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
+<button class = "btn btn-primary" id = "<?php echo $data->Ele_Id; ?>" data-toggle="modal" data-target="<?php echo '#'.$data->Field_Label; ?>">Add New</button>
+<script>
+$(document).ready(function () {
+	$("#<?php echo $data->Ele_Id;?>").click(function () {
+		admin.load_modal($(this));
+	})
+})
+</script>

@@ -110,10 +110,56 @@ class Meta extends CI_Controller {
             foreach ($data as $key => $attr) {
                 $dataarray[$key] = $attr;
             }
+
             if (sizeof($dataarray)>0) {
                 try {
                     $this->load->model('UpdateModel');
                     $meta = array("data" => $this->UpdateModel->insert_meta($dataarray));
+
+                    foreach($meta as $response) {
+                        if (strpos($response, 'error') == false) {
+                            $this->load->model('Section_Details');
+                            $response = $this->Section_Details->get_by_id($response);
+                        }
+                        return $this->output
+                        ->set_content_type('application/json')
+                        ->set_output(json_encode($response));
+                    }
+                } catch(exception $e) {
+                    return $this->output
+                        ->set_content_type('application/json')
+                        ->set_output($e->getMessage());
+                }
+            }
+
+        }
+
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output('input data was null');
+    } 
+
+     public function insert_meta_batch() {
+        $data = $this->input->post('data');
+        $data = json_decode($data);
+
+        if ($this->session->userdata('islogin') != true) {
+            $data = null;
+        }
+
+        if ($data != NULL) {
+            
+            $dataarray = array();
+
+            
+            foreach ($data as $key => $attr) {
+                $dataarray[$key] = $attr;
+            }
+
+            if (sizeof($dataarray)>0) {
+                try {
+                    $this->load->model('UpdateModel');
+                    $meta = array("data" => $this->UpdateModel->insert_meta_batch($dataarray));
 
                     foreach($meta as $response) {
                         if (strpos($response, 'error') == false) {

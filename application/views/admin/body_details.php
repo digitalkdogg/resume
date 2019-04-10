@@ -27,6 +27,9 @@
 							if (strpos($data->Field_Type, 'button') !== false) {
 								$this->view('templates/admin/meta_button', array('data'=>$data));
 							}
+							if (strpos($data->Field_Type, 'modal') !== false) {
+								$this->view('templates/admin/meta_modal', array('data'=>$data));
+							}
 						} else {
 							$this->view('templates/admin/meta_sister', array('data'=>$data));
 						}

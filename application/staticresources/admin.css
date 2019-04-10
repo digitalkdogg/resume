@@ -229,3 +229,7 @@ span.flatpickr.fa.fa-calendar.calendar:hover {
 button.pell-button {
     width: 35px;
 }
+
+div.modal-dialog.large {
+    width: 69%;
+}

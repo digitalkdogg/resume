@@ -116,6 +116,45 @@ class Admin extends CI_Controller {
 
      }
 
+  public function get_modal() {
+    if ($this->session->userdata('islogin')== true) {
+
+      $data = $this->input->get('target');
+      $this->load->model('Site_meta');
+      $modal = array('data' => $this->Site_meta->get_item($data));
+      $modal['key'] = $data;
+
+      foreach($modal as $rec) {
+          if (is_object($rec[0])==true) {
+            if (strpos($rec[0]->html, '<<<')!==false) {
+              $rec[0]->html = str_replace('<<<', '', $rec[0]->html);
+              $rec[0]->html = str_replace('>>>', '', $rec[0]->html);
+              $rec[0]->html =  $this->load->view('templates/admin/'.$rec[0]->html, '', TRUE);
+            }
+          }
+      }
+
+      return $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode($modal));
+    } else {
+      $this->session->sess_destroy();
+        return $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode(array('msg' =>'Your session is not valid')));
+    }
+
+  }
+
+  public function get_fragment() {
+      $view = $this->uri->segment(3, 0);
+      if ($view != null) {
+        return $this->load->view('templates/admin/'.$view);
+      }
+
+      return null;
+  }
+
   public function social() {
     /******************************************
     get rid of function.  replace by meta

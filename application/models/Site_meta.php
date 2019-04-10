@@ -16,5 +16,12 @@
         $query = $this->db->get('SiteMeta');
         return $query->result();
     }
+
+    public function get_item($item) {
+        $this->db->where('Name', $item);
+        $this->db->order_by('Order', 'asc');
+        $query = $this->db->get('SiteMeta');
+        return $query->result();
+    }
 }
 ?>

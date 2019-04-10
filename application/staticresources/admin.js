@@ -89,6 +89,7 @@ admin = {'meta': {},
 		var sisterfield = rec.Sister_Field;
 		var section = rec.Section_Id;
 		var order = rec.Order_Num;
+		var value = rec.value;
 
 		if (eleid != undefined && metaid != undefined) {
 
@@ -121,6 +122,10 @@ admin = {'meta': {},
 			}
 			if (order != undefined) {
 				obj[thekey]['order'] = order;
+			}
+
+			if (value != undefined) {
+				obj[thekey]['value'] = value;
 			}
 
 		}
@@ -272,6 +277,17 @@ admin = {'meta': {},
 				var afterele = $(sisters[len-1])
 				afterele = $(afterele).closest('div.row');
 				$(afterele).after(html)	;
+
+
+				if ($('#add-new').length >0) {
+					var addnewbtn = $('button#add-new');
+
+					$('#fields-wrapper div').each(function (index, val) {
+						if ($(this).attr('data-sisterid')=='is-sister') {
+							$(this).after(addnewbtn);
+						}
+					});
+				}
 			} else {
 				sectionid = $('#the-guts div.checkbox.is-sister').attr('data-section');
 				sisterid =  $('#the-guts div.checkbox.is-sister').attr('data-fieldid');
@@ -288,13 +304,127 @@ admin = {'meta': {},
     	}, {});
 	},
 	changeWysiwyg: function (html, thiseditor) {
-		var thisone = admin.meta['pre-'+thiseditor]
-		if (thisone.value.trim() != html.trim()) {
-			thisone['changed'] = true;
+		var thisone = admin.meta['pre-'+thiseditor];
+
+		if (thisone != undefined) {
+			if (thisone.value.trim() != html.trim()) {
+				thisone['changed'] = true;
+				thisone.value = html.trim();
+				admin.meta['pre-'+thiseditor] = thisone 
+			}
+		} else {
+			var thisone = {};
+			thisone['changed']=true;
 			thisone.value = html.trim();
-			admin.meta['pre-'+thiseditor] = thisone 
+			admin['newrec']= thisone;
 		}
+
+
+	},
+	load_modal: function (ele) {
+		var data =  $(ele).attr('data-target').replace('#', '');
+		
+		$.ajax({
+			'url': admin.core.baseurl + 'index.php/admin/get_modal',
+			'type': 'GET',
+			'data': {'target' : data},
+			'complete': function (data) {
+				data = data.responseJSON
+				var modalid = '#' + data.key;
+
+				$.each(data.data, function () {
+					var html = this.html;
+					$(modalid + ' .modal-body').html(html)
+				})
+
+				admin.load_date_pickers();
+				//admin.register_pells();
+				
+			}
+		})
+	},
+	register_pell: function (editor, html) {
+		/**************************************************** 
+		this functions load the wysiwyg editors with 
+		their correct html.
+		 *******************************************************/
+		if (html != undefined) {
+			editor.content.innerHTML = html;
+		}
+	},
+	add_new_experience: function (eleid) {
+		var data = {}
+
+		$('#'+eleid + ' .data').each(function (index, val) {
+			var fieldlabel = $(this).attr('data-labelname');
+			var fieldval = $(this).val();
+			var fieldtype = $(this).attr('data-type');
+
+			if ($(this).prop('nodeName')=='PRE') {
+				if (fieldval == '' ){
+					if (admin.newrec != undefined) {
+						fieldval = admin.newrec.value
+					}
+				}
+			}
+
+			data[index] = {
+				'Field_Label': fieldlabel,
+				'Field_Value' : fieldval,
+				'Ele_Id' : 'experience-' + fieldlabel.toLowerCase(),
+				'Frontend_Type' : 'div',
+				'Class_List': 'form-control ' + fieldlabel.toLowerCase(),
+				'Field_Type': fieldtype,
+				'Order_Num': index + 1,
+				'Section_Id': 8
+			}
+		})
+
+		var wrapper = {
+			'Field_Label': 'Wrapper',
+			'Field_Value' : 'Wrapper',
+			'Ele_Id' : 'experience',
+			'Frontend_Type' : 'div',
+			'Class_List': 'na',
+			'Field_Type': 'na',
+			'Sister_Field': 'is-sister',
+			'Order_Num': 0,
+			'Section_Id': 8
+		};
+
+		$.ajax({
+			'url': admin.core.baseurl + 'index.php/Meta/insert_meta',
+			'data' : {data: JSON.stringify(wrapper)},
+			'type': 'POST',
+			'success': function (wrapperdata) {
+				$.each(wrapperdata, function () {
+					$('#add-new-experience').attr('data-sisterid', this.Section_Details_Id);
+					$.each(data, function () {
+						this['Sister_Field'] = $('#add-new-experience').attr('data-sisterid');
+						console.log('wrappe was inserted');
+					})
+				})
+				
+				$.ajax({
+					'url': admin.core.baseurl + 'index.php/Meta/insert_meta_batch',
+					'data' : {'data' : JSON.stringify(data)},
+					'type': 'POST',
+					success: function (data) {
+						console.log('main data inserted');
+						$('button.action').text('Refreshing');
+						admin.displayStatus($('span#modal_status'), 'Record Has Been Insert and we will now refresh', 2000);
+						location.reload();
+					},
+					error: function (data) {
+						admin.displayStatus($('span#modal_status'), '<span class = "error">' + data.msg + '</span>', 10000);
+					}
+				});
+			}
+		})
+
+		
 	}
+
 }
 
 
@@ -366,6 +496,8 @@ $('#the-guts.meta pre.data.html-output').each(function () {
  	 $.each(admin.fieldmap, function (index, fieldval) {
 	 	rec[index]= $($this).attr(fieldval)
 	 })	
+
+	 rec['value']= $(this).html().trim();
 
 	admin.add_rec_obj(rec, admin.meta, 'pre-' + $($this).attr('data-fieldid'));
 
@@ -467,6 +599,14 @@ $('#the-guts .resume-item').click(function () {
 	}
 })
 
+$('#the-guts button.action').click(function () {
+	var action = $(this).attr('data-action');
+	action = action.replace(/-/g, '_');
+
+	var id = $(this).closest('div.modal').attr('id')
+	admin[action](id);
+})
+
 $('#the-guts .modal button#add-item').click(function () {
 	/****************************************************************
 		This click event for the add item (save) button from the modal
@@ -557,37 +697,7 @@ admin.check_for_images();
 admin.check_for_sisters();
 
 if ($('#editor.pell').length > 0) {
-	/**************************************************** 
-	this functions load the wysiwyg editors with 
-	their correct html.  Also hides the code button
-	 *******************************************************/
-	var editor = window.pell.init({
-					element: document.getElementById('editor'),
-					defaultParagraphSeparator: 'p',
-					onChange: function (html) {
-						document.getElementsByClassName('html-output').textContent = html;
-
-						admin.changeWysiwyg(html, $(editor).attr('data-fieldid'));
-					}
-				})
-
-
-	$('#editor.pell').each(function() {
-		var fieldid = $(this).closest('.row').attr('data-fieldid');
-		$('.data.html-output').each(function () {
-			if (fieldid == $(this).data('fieldid')) {
-				admin.meta['pre-' + fieldid]['value']= $(this).html().trim();
-				editor.content.innerHTML = admin.meta['pre-' + fieldid]['value'];
-
-				$('.pell-button').each(function () {
-					var title = $(this).attr('title');
-					if (title == 'Code' || title == 'Paragraph') {
-						$(this).addClass('hidden');
-					}
-				})
-			}
-		})
-	})	//end each pell editor	
+	//admin.register_pells();
 }
 
 })(jQuery);
