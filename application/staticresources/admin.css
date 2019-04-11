@@ -233,3 +233,7 @@ button.pell-button {
 div.modal-dialog.large {
     width: 69%;
 }
+
+#the-guts .modal-body {
+    min-height: 300px;
+}

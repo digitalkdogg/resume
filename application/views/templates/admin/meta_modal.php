@@ -9,7 +9,7 @@
         <h4 class="modal-title"><?php echo $data->Field_Label; ?></h4>
       </div>
       <div class="modal-body">
-        <p>Some text in the modal.</p>
+        <p>No Data!</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default action" id = "<?php $data->Ele_Id; ?>" data-action = "<?php echo $data->Ele_Id;?>">Add</button> <span id = "modal_status" />

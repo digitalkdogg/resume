@@ -122,9 +122,10 @@ class Admin extends CI_Controller {
       $data = $this->input->get('target');
       $this->load->model('Site_meta');
       $modal = array('data' => $this->Site_meta->get_item($data));
-      $modal['key'] = $data;
 
-      foreach($modal as $rec) {
+      $modal['key'] = $data;
+      if (sizeof($modal['data'])> 0) {
+        foreach($modal as $rec) {
           if (is_object($rec[0])==true) {
             if (strpos($rec[0]->html, '<<<')!==false) {
               $rec[0]->html = str_replace('<<<', '', $rec[0]->html);
@@ -132,6 +133,7 @@ class Admin extends CI_Controller {
               $rec[0]->html =  $this->load->view('templates/admin/'.$rec[0]->html, '', TRUE);
             }
           }
+        }
       }
 
       return $this->output

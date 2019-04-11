@@ -330,16 +330,28 @@ admin = {'meta': {},
 			'data': {'target' : data},
 			'complete': function (data) {
 				data = data.responseJSON
-				var modalid = '#' + data.key;
+				if (data.data.length > 0) {
+					
+					var modalid = '#' + data.key;
 
-				$.each(data.data, function () {
-					var html = this.html;
-					$(modalid + ' .modal-body').html(html)
-				})
+					$.each(data.data, function () {
+						var html = this.html;
+						$(modalid + ' .modal-body').html(html)
+					})
 
-				admin.load_date_pickers();
-				//admin.register_pells();
-				
+					admin.load_date_pickers();
+				} else {
+					$('button.action').each(function () {
+						if ($(this).attr('data-action')==data.key) {
+							$(this).hide()
+						}
+					})
+					//$.each('butotn.action', function () {
+						//if ($(this).attr('data-action')==data.key) {
+						//	$(this).hide()
+						//}
+					//})
+				}
 			}
 		})
 	},
