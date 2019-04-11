@@ -130,7 +130,10 @@ class Admin extends CI_Controller {
             if (strpos($rec[0]->html, '<<<')!==false) {
               $rec[0]->html = str_replace('<<<', '', $rec[0]->html);
               $rec[0]->html = str_replace('>>>', '', $rec[0]->html);
-              $rec[0]->html =  $this->load->view('templates/admin/'.$rec[0]->html, '', TRUE);
+
+              if (file_exists(APPPATH.'views/templates/admin/'.$rec[0]->html.'.php')==true) {
+                $rec[0]->html =  $this->load->view('templates/admin/'.$rec[0]->html, '', TRUE);
+              } 
             }
           }
         }

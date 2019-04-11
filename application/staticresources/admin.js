@@ -346,11 +346,6 @@ admin = {'meta': {},
 							$(this).hide()
 						}
 					})
-					//$.each('butotn.action', function () {
-						//if ($(this).attr('data-action')==data.key) {
-						//	$(this).hide()
-						//}
-					//})
 				}
 			}
 		})
@@ -363,6 +358,23 @@ admin = {'meta': {},
 		if (html != undefined) {
 			editor.content.innerHTML = html;
 		}
+	},
+	insert_meta_batch: function (recs) {
+		$.ajax({
+			'url': admin.core.baseurl + 'index.php/Meta/insert_meta_batch',
+			'data' : {'data' : JSON.stringify(recs)},
+			'type': 'POST',
+			success: function (data) {
+				console.log('main data inserted');
+				$('button.action').text('Refreshing');
+				admin.displayStatus($('span#modal_status'), 'Record Has Been Insert and we will now refresh', 2000);
+				location.reload();
+			},
+			error: function (data) {
+				admin.displayStatus($('span#modal_status'), '<span class = "error">' + data.msg + '</span>', 10000);
+			}
+		});
+		
 	},
 	add_new_experience: function (eleid) {
 		var data = {}
@@ -416,27 +428,65 @@ admin = {'meta': {},
 						console.log('wrappe was inserted');
 					})
 				})
-				
-				$.ajax({
-					'url': admin.core.baseurl + 'index.php/Meta/insert_meta_batch',
-					'data' : {'data' : JSON.stringify(data)},
-					'type': 'POST',
-					success: function (data) {
-						console.log('main data inserted');
-						$('button.action').text('Refreshing');
-						admin.displayStatus($('span#modal_status'), 'Record Has Been Insert and we will now refresh', 2000);
-						location.reload();
-					},
-					error: function (data) {
-						admin.displayStatus($('span#modal_status'), '<span class = "error">' + data.msg + '</span>', 10000);
-					}
-				});
+
+				admin.insert_meta_batch(data);
+			}
+		})	
+	}, 
+	'add_new_skill': function (eleid) {
+		var wrapper = {
+			'Field_Label': 'Wrapper',
+			'Field_Value' : 'Wrapper',
+			'Ele_Id' : 'skill',
+			'Frontend_Type' : 'div',
+			'Class_List': 'na',
+			'Field_Type': 'na',
+			'Sister_Field': 'is-sister',
+			'Order_Num': 0,
+			'Section_Id': 9
+		};
+
+		$.ajax({
+			'url': admin.core.baseurl + 'index.php/Meta/insert_meta',
+			'data' : {data: JSON.stringify(wrapper)},
+			'type': 'POST',
+			'success': function (wrapperdata) {
+				var data = {}
+				$.each(wrapperdata, function (){
+					$this = this
+					$('#'+eleid + ' .data').each(function (index, val) {
+						var fieldlabel = $(this).attr('data-labelname');
+						var fieldval = $(this).val();
+						var fieldtype = $(this).attr('data-type');
+
+						if ($(this).prop('nodeName')=='PRE') {
+							if (fieldval == '' ){
+								if (admin.newrec != undefined) {
+									fieldval = admin.newrec.value
+								}
+							}
+						}			
+
+						data[index] = {
+							'Field_Label': fieldlabel,
+							'Field_Value' : fieldval,
+							'Ele_Id' : 'experience-' + fieldlabel.toLowerCase(),
+							'Frontend_Type' : 'div',
+							'Class_List': 'form-control ' + fieldlabel.toLowerCase(),
+							'Field_Type': fieldtype,
+							'Order_Num': index + 1,
+							'Sister_Field': $this.Section_Details_Id,
+							'Section_Id': 9
+						};
+					})
+				})
+
+				admin.insert_meta_batch(data);
 			}
 		})
-
+		
 		
 	}
-
 }
 
 
@@ -616,7 +666,14 @@ $('#the-guts button.action').click(function () {
 	action = action.replace(/-/g, '_');
 
 	var id = $(this).closest('div.modal').attr('id')
-	admin[action](id);
+	if (admin[action] != undefined) {
+		admin[action](id);
+	} else {
+		$('<span />', {
+			'text': 'No function defined',
+			'style': 'padding: 0 10px'
+		}).insertBefore($(this))
+	}
 })
 
 $('#the-guts .modal button#add-item').click(function () {
