@@ -470,7 +470,7 @@ admin = {'meta': {},
 						data[index] = {
 							'Field_Label': fieldlabel,
 							'Field_Value' : fieldval,
-							'Ele_Id' : 'experience-' + fieldlabel.toLowerCase(),
+							'Ele_Id' : 'skills-' + fieldlabel.toLowerCase(),
 							'Frontend_Type' : 'div',
 							'Class_List': 'form-control ' + fieldlabel.toLowerCase(),
 							'Field_Type': fieldtype,

@@ -469,7 +469,7 @@ var resume = {};
 									'text': this.Field_Value
 								}).appendTo('#body-content #skill-wrapper_'+sisterid)
 							}
-							if (this.Ele_Id=='skills-years') {
+							if (this.Ele_Id.indexOf('skills-years')>=0) {
 								$('#body-content #skill-wrapper_'+sisterid + ' .skills-title').attr('data-years', this.Field_Value)
 								$('#body-content #skill-wrapper_'+sisterid + ' .skills-title').append(' - ' + this.Field_Value + ' Years')
 								resume.load_skill($('#skill-wrapper_'+sisterid + ' .skills-title'))
@@ -535,7 +535,6 @@ var resume = {};
 		load_skill: function (ele) {
 			var years = $(ele).attr('data-years');
 
-
 			if (years != undefined) {
 				years = years *10;
 				var speed = years * 75
@@ -547,61 +546,6 @@ var resume = {};
   					}); 
 			} 
 
-		},
-		load_skill_dets : function (skills, ele) {
-			var name = $(ele).data('name');
-			var thisobj = this.lookup_skills(name, skills);
-
-			$('#modal-title').empty();
-			$('#modal-body').empty();
-			$('#modal-title').html(thisobj.Name);
-
-			$('<div />', {
-				'class':'skill-details',
-				'id': 'skill-details_'+thisobj.id
-			}).appendTo('#modal-body');
-
-			$('<div />', {
-				'id': 'skill-details-row-1'
-			}).appendTo('#skill-details_'+thisobj.id)
-			
-			$('<div />', {
-				'class': 'col-lg-3 bold',
-				'text': 'Level :'
-			}).appendTo('#skill-details-row-1');
-
-			$('<div />', {
-				'class': 'col-lg-8',
-				'text': thisobj.ExpertLevel
-			}).appendTo('#skill-details-row-1');
-
-			$('<div />', {
-				'id': 'skill-details-row-2'
-			}).appendTo('#skill-details_'+thisobj.id)
-			
-			$('<div />', {
-				'class': 'col-lg-3 bold',
-				'text': 'Years :'
-			}).appendTo('#skill-details-row-2');
-
-			$('<div />', {
-				'class': 'col-lg-9',
-				'text': thisobj.ExpertYear
-			}).appendTo('#skill-details-row-2');
-
-			$('<div />', {
-				'id': 'skill-details-row-3'
-			}).appendTo('#skill-details_'+thisobj.id)
-
-			$('<div />', {
-				'class': 'col-lg-12',
-				'text': thisobj.Detals
-			}).appendTo('#skill-details-row-3');
-
-
-			$('#myModal').addClass('flipInY');
-
-			this.load_project_skills(thisobj);
 		}
 	}
 
