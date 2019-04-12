@@ -82,7 +82,8 @@ var resume = {};
 				$('li#experience').addClass('active');
 				this.getGuts('Experience', 'Experience');
 			} else if ($(bodyholder).hasClass('skills')==true || $(bodyholder).hasClass('Skills')) {
-	
+				$('li#skills').addClass('active');
+				this.getGuts('Skills', 'Skills');
 			}
 
 			$('li').each(function () {
@@ -240,6 +241,9 @@ var resume = {};
 					}
 					if (section_type=='experience') {
 						resume.renderExperience(data);
+					}
+					if (section_type=='skills') {
+						resume.renderSkills(data);
 					}
 				},
 				error: function(data) {
@@ -440,6 +444,42 @@ var resume = {};
 				})
 			}
 		},
+		renderSkills: function (data) {
+			if (this.check_menu_disabled('skills')==false) {
+				$('#body-content').empty();
+				$('<div />', {
+					'id': 'skills'
+				}).appendTo('#body-content')
+				resume.data['skills'] = data.html;
+
+				$.each(data.html, function () {
+					if (this.Sister_Field == 'is-sister') {
+						var sisterid = this.Section_Details_Id;
+						$('<div />', {
+							'id': 'skill-wrapper_'+sisterid,
+							'class': 'skill'
+						}).appendTo('#body-content #skills')
+					} else {
+						var sisterid = this.Sister_Field
+
+					//	if ($('#body-content #skill-wrapper_'+sisterid).length > 0) {
+							if (this.Ele_Id=='skills-title') {
+								$('<div />', {
+									'class': this.Ele_Id,
+									'text': this.Field_Value
+								}).appendTo('#body-content #skill-wrapper_'+sisterid)
+							}
+							if (this.Ele_Id=='skills-years') {
+								$('#body-content #skill-wrapper_'+sisterid + ' .skills-title').attr('data-years', this.Field_Value)
+								$('#body-content #skill-wrapper_'+sisterid + ' .skills-title').append(' - ' + this.Field_Value + ' Years')
+								resume.load_skill($('#skill-wrapper_'+sisterid + ' .skills-title'))
+							}
+
+						}
+					//}
+				})
+			}
+		},
 		isMobile: function () {
 			if (sessionStorage.desktop) // desktop storage 
         		return false;
@@ -491,6 +531,22 @@ var resume = {};
 				}
 			} 
 			return false;
+		},
+		load_skill: function (ele) {
+			var years = $(ele).attr('data-years');
+
+
+			if (years != undefined) {
+				years = years *10;
+				var speed = years * 75
+
+   					$(ele).animate({
+   						width: years + '%'
+  					}, speed, function() {
+    				// Animation complete.
+  					}); 
+			} 
+
 		},
 		load_skill_dets : function (skills, ele) {
 			var name = $(ele).data('name');
