@@ -66,3 +66,11 @@ div#skill-wrapper {
 	padding:0 5px;
 	color:black;
 }
+
+div#career-hightlights ul {
+    margin: 5px 0;
+}
+
+#career-hightlights p {
+    margin:0 ;
+}

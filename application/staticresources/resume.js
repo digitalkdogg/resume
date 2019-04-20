@@ -272,7 +272,7 @@ var resume = {};
 						if (this.Ele_Id == 'show-career-highlights') {
 							console.log($('#body-content .about-wrapper').length)
 							$('<'+this.Frontend_Type + ' />', {
-								text: this.Field_Value
+								'html': this.Field_Value
 							}).appendTo('#body-content #objective')
 						}
 					}

@@ -91,6 +91,11 @@
 								<span class = "col-lg-9"><?php echo $about->Field_Value; ?></span>
 								</div>
 						<?php
+							} else if ($about->Ele_Id == 'career-highlights') { ?>
+								<div id = "career-hightlights">
+								<span class = "col-lg-12" style = "background:red;"><?php echo $about->Field_Value; ?></span>
+								</div>
+						<?php
 							}
 						} ?>
 					</div>
