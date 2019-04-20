@@ -270,10 +270,16 @@ var resume = {};
 							}).prependTo('#body-content #objective')
 						}
 						if (this.Ele_Id == 'show-career-highlights') {
-							console.log($('#body-content .about-wrapper').length)
+							if (this.Field_Value == 'checked') {
+								$('<'+this.Frontend_Type + ' />', {
+									'id': 'show-career-highlights'
+								}).insertAfter('#body-content #objective');
+							}
+						}
+						if (this.Ele_Id == 'career-highlights') {
 							$('<'+this.Frontend_Type + ' />', {
 								'html': this.Field_Value
-							}).appendTo('#body-content #objective')
+							}).appendTo('#body-content #show-career-highlights')
 						}
 					}
 				})
