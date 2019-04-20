@@ -1,0 +1,68 @@
+@page :right {
+	margin:0;
+}
+body {
+	background: white;
+	color:black;
+	font-family: sans-serif;
+	margin:0;
+}
+
+#container {
+	width:100%;
+	margin:0;
+	padding:0;
+}
+
+div#social-container, div#contact-container {
+    background: #ccc;
+    width:100%;
+    padding-bottom:10px;
+}
+
+div#social-container li, div#contact-container li{
+    list-style: none;
+}
+
+.bg-green {
+	 background: #48a843;
+	 color:white;
+	 width:100%;
+	 margin:0;
+	 padding:0 10px;
+	 font-weight: bold;
+}
+
+.u-green {
+	border-bottom: 1px solid #48a843;
+}
+
+.width-25 {
+	width: 25%;
+}
+
+img.icon {
+    height: 20px;
+    width: 20px;
+    vertical-align:bottom;
+}
+
+.text-align-center {
+	text-align:center;
+}
+
+#contact-container span.text {
+    font-size: .9em;
+ 	margin-left:5px;
+}
+
+div#edu-wrapper, div#exp-wrapper {
+    border-bottom: 1px solid #ccc;
+}
+
+div#skill-wrapper {
+	background:#ccc;
+	margin:10px 0;
+	padding:0 5px;
+	color:black;
+}

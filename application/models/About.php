@@ -21,7 +21,7 @@
         //join Section_Type on Section_Type.Section_Type_Id = Section.Section_Type_Id 
         //where Section_Type.Name = 'Meta' and Resume.Resume_Number = 1
 
-        $this->db->select('Section_Details.Field_Value, User.User_Id, Section_Details.Section_Details_Id, Section_Details.Ele_Id, Section_Details.Field_Type, Section_Details.Frontend_Type, Section_Details.Sister_Field, Section_Details.Class_List, Section_Details.Order_Num');
+        $this->db->select('Section_Details.Field_Value, Section_Details.Field_Label, User.User_Id, Section_Details.Section_Details_Id, Section_Details.Ele_Id, Section_Details.Field_Type, Section_Details.Frontend_Type, Section_Details.Sister_Field, Section_Details.Class_List, Section_Details.Order_Num');
         $this->db->from('Resume');
         $this->db->join('User', 'User.User_Id = Resume.User_Id');
         $this->db->join('Section', 'Section.Resume_Number = Resume.Resume_Number');
