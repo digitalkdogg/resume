@@ -23,6 +23,8 @@ class Printres extends CI_Controller {
             $this->load->model('education');
             $this->load->model('experience');
             $this->load->model('skills');
+            $this->load->model('resume');
+            $settings = $this->resume->get_settings_by_resume($resumeid, 'settings');
             $social = $this->about->get_by_resume($resumeid, 'socialmedia');
             $contactinfo = $this->about->get_by_resume($resumeid, 'contactinfo');
             $about = $this->about->get_by_resume($resumeid, 'About');
@@ -61,6 +63,7 @@ class Printres extends CI_Controller {
         $data = null;
         $data['resumeid'] = $resumeid;
         $data['username'] = $username;
+        $data['setting'] = $settings;
         $data['contactinfo'] = $contactinfo;
         $data['social'] = $social;
         $data['about'] = $about;
@@ -68,23 +71,22 @@ class Printres extends CI_Controller {
         $data['skills'] = $skillsdata;
         $data['skillsyears'] = $skillsyears;
         $data['education'] = $edudata;
-      //  var_dump($education);
 
-        
-        $data['resumename'] = 'I need to change this';
-     
-       // $html = trim($this->load->view('pdf/html_head', array('data'=>$data) , TRUE)," \t\n\r");
+        foreach ($settings as $setting) {
+          if ($setting->Ele_Id == 'printable-title') {
+            $data['resumename'] = $setting->Field_Value;
+          }
+        }
+
         $html = trim($this->load->view('pdf/pdf_body', array('data'=>$data) , TRUE)," \t\n\r");
        
-     //   echo $html;
+      //  echo $html;
         //var_dump($html); 
 
     
         $mpdf->WriteHTML(trim($html, " \t\n\r"));
-       // $mpdf->DeletePages(1);
-       // var_dump($mpdf);
-       $mpdf->Output(); // opens in browser
-        //$mpdf->Output('arjun.pdf','D'); // it downloads the file into the user system, with give name
+        $mpdf->Output(); // opens in browser
+
     }
  
 }
