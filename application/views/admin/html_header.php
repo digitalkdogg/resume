@@ -13,10 +13,14 @@
      <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>/application/staticresources/pelleditor/pell.min.css">
     <script src="<?php echo base_url(); ?>/application/staticresources/pelleditor/pell.min.js"></script>    
 
+    <?php var_dump($this->session->userdata('userid')); ?>
+
     <script>
     var core = {}
     core['baseurl'] = '<?php echo base_url(); ?>';
     core['siteurl'] = '<?php echo current_url(); ?>';
+    core['userid'] = '<?php echo $this->session->userdata('userid'); ?>';
+    core['username'] = '<?php echo $this->session->userdata('username'); ?>';
 
 	</script>
 </head>

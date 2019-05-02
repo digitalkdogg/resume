@@ -58,12 +58,20 @@ class Admin extends CI_Controller {
 
         if ($username != NULL && $password != NULL ) {
        		$user = $this->User->auth(array('username'=>$username));
+
        		foreach($user as $auser) {
        			if (password_verify($password, $auser->Password) == true) {
        				$this->session->set_userdata('islogin', true);
+              $this->session->set_userdata('userid', $auser->User_Id);
+              $this->session->set_userdata('username', $auser->Username);
+
        				return $this->output
       				->set_content_type('application/json')
-      				->set_output(json_encode(array('msg' => 'login successful', 'id' => $this->session->session_id)));
+      				->set_output(json_encode(array('msg' => 'login successful', '
+                                            id' => $this->session->session_id,
+                                            'userid'=> $this->session->userdata('userid'),
+                                            'username' => $this->session->userdata('username')
+                                        )));
        			} else {
        				$this->session->sess_destroy();
        				return $this->output
@@ -196,6 +204,22 @@ class Admin extends CI_Controller {
         redirect (base_url() . 'index.php/admin/login', 'refresh');
       }
 
+     }
+
+     public function init_resume() {
+        if ($this->session->userdata('islogin')== true) {
+           $userid = $this->session->userdata('userid');
+
+
+           return $this->output
+              ->set_content_type('application/json')
+              ->set_output(json_encode(array('msg' =>'we are good')));
+
+        } else {
+          return $this->output
+              ->set_content_type('application/json')
+              ->set_output(json_encode(array('msg' =>'Not a valid session')));
+        }
      }
 
 }//end class
