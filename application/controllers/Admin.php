@@ -207,9 +207,22 @@ class Admin extends CI_Controller {
      }
 
      public function init_resume() {
+      /****************************************************
+      * To Do : pass in the resume name and desc          *
+      *                                                   *
+      ****************************************************/
+
+        $this->load->model('Resume');
+
         if ($this->session->userdata('islogin')== true) {
            $userid = $this->session->userdata('userid');
+           $resumedata = array('Resume_Number'=>'',
+                              'User_Id'=> $userid, 
+                              'Name'=> 'The name', 
+                              'Description'=>'this is the description');
+          $resumeid = $this->Resume->insert_new_resume($resumedata);
 
+           var_dump($resumeid);
 
            return $this->output
               ->set_content_type('application/json')

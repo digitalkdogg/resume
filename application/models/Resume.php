@@ -27,5 +27,19 @@
 
         return $query->result();
     }
+
+    public function insert_new_resume($data) {
+
+       $row = $this->db->select('Resume_Number')->limit(1)->order_by('Resume_Number', 'DESC')->get('Resume')->row();
+       $row = $row->Resume_Number;
+ 
+        $data['Resume_Number'] = $row+1;
+        try {
+            $this->db->insert('Resume', $data);
+            return $this->db->insert_id();
+        } catch (exception $e) {
+            return false;
+        }
+    }
 }
 ?>
